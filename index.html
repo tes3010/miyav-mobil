@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miyav Yatırım</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fce4ec; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .app-container { background-color: #ffffff; width: 350px; border-radius: 35px; box-shadow: 0 15px 30px rgba(0,0,0,0.15); overflow: hidden; text-align: center; padding-bottom: 20px; position: relative; min-height: 500px;}
+        .header { background: linear-gradient(135deg, #e1bee7, #f8bbd0); padding: 20px; color: #4a148c; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; }
+        .cat-icon { font-size: 70px; margin: 15px 0; animation: float 3s infinite ease-in-out; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .input-box { margin: 15px; padding: 12px; font-size: 18px; width: 70%; border: 2px solid #e1bee7; border-radius: 12px; text-align: center; outline: none; transition: 0.3s;}
+        .input-box:focus { border-color: #ba68c8; }
+        .action-btn { background: #d81b60; color: white; border: none; padding: 12px 25px; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(216, 27, 96, 0.3); transition: 0.2s; margin-top: 10px; width: 80%;}
+        .action-btn:active { transform: scale(0.95); }
+        .action-btn.secondary { background: #ab47bc; box-shadow: 0 4px 10px rgba(171, 71, 188, 0.3); margin-top: 15px;}
+        .total-penalty { font-size: 26px; color: #d81b60; font-weight: bold; margin-top: 10px;}
+        .screen { display: none; padding: 10px 20px; }
+        .active-screen { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .history-item { background: #f3e5f5; border-radius: 10px; padding: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; text-align: left; border-left: 5px solid #ab47bc;}
+        .history-item.penalty { border-left-color: #d81b60; background: #fce4ec; }
+        .history-list { max-height: 300px; overflow-y: auto; margin-top: 15px; padding-right: 5px;}
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <div class="header">
+            <h2 style="margin:0;">🥣 Ortak Mama Kabı</h2>
+        </div>
+
+        <div id="loginScreen" class="screen active-screen">
+            <div class="cat-icon" style="font-size: 80px;">🐈</div>
+            <h3 style="color: #7b1fa2;">Hoş Geldin!</h3>
+            <p style="color: #666; font-size: 14px;">Lütfen ismini gir:</p>
+            <input type="text" id="loginUsername" class="input-box" placeholder="İsminiz">
+            <br>
+            <button class="action-btn" onclick="login()">Giriş Yap 🐾</button>
+        </div>
+
+        <div id="dashboardScreen" class="screen">
+            <div class="cat-icon">🐱</div>
+            <h3 id="welcomeMessage" style="color: #7b1fa2; margin-top: 0;"></h3>
+            <p style="color: #666; font-weight: bold;">Bugünkü Ekran Süren (Dakika)</p>
+            <input type="number" id="minutesInput" class="input-box" placeholder="Örn: 210">
+            <br>
+            <button class="action-btn" id="submitBtn" onclick="sendData()">Süremi Gir 🐾</button>
+            <button class="action-btn secondary" onclick="fetchHistory()">Geçmişe Bak 📜</button>
+        </div>
+
+        <div id="receiptScreen" class="screen">
+            <div class="cat-icon" style="font-size: 60px; animation: none;">😾</div>
+            <h3 style="color: #e65100; margin: 0;">Miyav! Limit Aşıldı!</h3>
+            <p style="color: #666;">Aşılan süreye göre cezan:</p>
+            <div class="total-penalty" id="penaltyAmount">₺ 0.00</div>
+            <button class="action-btn" style="background: #4caf50; margin-top: 20px;" onclick="switchScreen('dashboardScreen')">Ödedim, Onayla 🐾</button>
+        </div>
+        
+        <div id="successScreen" class="screen">
+            <div class="cat-icon">😻</div>
+            <h3 style="color: #4caf50;">Harika! Limit Aşılmadı.</h3>
+            <p style="color: #7b1fa2;">Bugün çok usluyuz!</p>
+            <button class="action-btn" onclick="switchScreen('dashboardScreen')">Geri Dön</button>
+        </div>
+
+        <div id="historyScreen" class="screen">
+            <h3 style="color: #7b1fa2; margin-bottom: 5px;">📜 Son Kayıtlar</h3>
+            <div class="history-list" id="historyListContainer">Yükleniyor...</div>
+            <button class="action-btn secondary" style="margin-top: 15px;" onclick="switchScreen('dashboardScreen')">Ana Ekrana Dön</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDsBBHVbNmcbeToQ-zXjFIt68RfhYl5qds",
+            authDomain: "miyav-yatirim.firebaseapp.com",
+            projectId: "miyav-yatirim",
+            storageBucket: "miyav-yatirim.firebasestorage.app",
+            messagingSenderId: "442761859255",
+            appId: "1:442761859255:web:794c98053f761f1df7bd32"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let loggedInUser = null;
+        const DAILY_LIMIT = 180; // 3 saat limit
+        const PENALTY_RATE = 1.0; // Dakika başı 1 TL
+
+        // Ekran değiştirme fonksiyonu
+        window.switchScreen = function(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
+            document.getElementById(screenId).classList.add('active-screen');
+        };
+
+        // Giriş yapma
+        window.login = function() {
+            const username = document.getElementById('loginUsername').value.trim();
+            if(!username) return alert("Lütfen adını yaz!");
+            
+            // İlk harfi büyük yapma garantisi
+            loggedInUser = username.charAt(0).toUpperCase() + username.slice(1).toLowerCase();
+            document.getElementById('welcomeMessage').innerText = `Merhaba, ${loggedInUser}!`;
+            document.getElementById('minutesInput').value = ""; 
+            window.switchScreen('dashboardScreen');
+        };
+
+        // Süreyi veritabanına gönderme
+        window.sendData = async function() {
+            const minutes = parseInt(document.getElementById('minutesInput').value);
+            if(!minutes) return alert("Lütfen bir süre girin!");
+
+            const btn = document.getElementById('submitBtn');
+            btn.innerText = "Kaydediliyor...";
+            btn.disabled = true;
+
+            let penalty = 0;
+            if (minutes > DAILY_LIMIT) {
+                penalty = (minutes - DAILY_LIMIT) * PENALTY_RATE;
+            }
+
+            try {
+                // Firebase Firestore'a kaydetme emri
+                await addDoc(collection(db, "logs"), {
+                    username: loggedInUser,
+                    minutesUsed: minutes,
+                    calculatedPenalty: penalty,
+                    entryDate: new Date().toLocaleDateString('tr-TR'),
+                    timestamp: Date.now()
+                });
+
+                if (penalty > 0) {
+                    document.getElementById('penaltyAmount').innerText = "₺ " + penalty.toFixed(2);
+                    window.switchScreen('receiptScreen');
+                } else {
+                    window.switchScreen('successScreen');
+                }
+            } catch (error) {
+                alert("Bağlantı hatası: " + error.message);
+            } finally {
+                btn.innerText = "Süremi Gir 🐾";
+                btn.disabled = false;
+            }
+        };
+
+        // Geçmişi çekme
+        window.fetchHistory = async function() {
+            window.switchScreen('historyScreen');
+            const container = document.getElementById('historyListContainer');
+            container.innerHTML = "Yükleniyor...";
+
+            try {
+                // Sadece giriş yapan kişinin verilerini getir
+                const q = query(collection(db, "logs"), where("username", "==", loggedInUser));
+                const querySnapshot = await getDocs(q);
+                
+                let historyData = [];
+                querySnapshot.forEach((doc) => {
+                    historyData.push(doc.data());
+                });
+
+                // Yeniden eskiye doğru sırala
+                historyData.sort((a, b) => b.timestamp - a.timestamp);
+                historyData = historyData.slice(0, 10); // Sadece son 10 kaydı göster
+
+                container.innerHTML = "";
+                if(historyData.length === 0) {
+                    container.innerHTML = "<p style='color:#999; margin-top:20px;'>Henüz hiç kayıt yok.</p>";
+                } else {
+                    historyData.forEach(item => {
+                        const isPenalty = item.calculatedPenalty > 0;
+                        container.innerHTML += `
+                            <div class="history-item ${isPenalty ? 'penalty' : ''}">
+                                <div>
+                                    <strong>${item.entryDate}</strong><br>
+                                    <span style="color:#666">${item.minutesUsed} Dk</span>
+                                </div>
+                                <div style="font-weight:bold; color: ${isPenalty ? '#d81b60' : '#4caf50'}">
+                                    ${isPenalty ? '₺' + item.calculatedPenalty.toFixed(2) : 'Ceza Yok'}
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+            } catch (error) {
+                container.innerHTML = "Geçmiş yüklenirken hata oluştu.";
+            }
+        };
+    </script>
+</body>
+</html>
