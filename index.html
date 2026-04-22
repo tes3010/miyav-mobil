@@ -6,614 +6,262 @@
     <title>Miyav & Hav Yatırım</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="apple-touch-icon" href="https://em-content.zobj.net/source/apple/354/paw-prints_1f43e.png">
+    
     <style>
-        :root { --main-lilac: #e1bee7; --dark-lilac: #7b1fa2; --soft-pink: #fce4ec; --apple-gray: #f2f2f7; --accent-red: #ff2d55; --accent-green: #34c759; --accent-orange: #ff9500; }
+        :root { 
+            --main-lilac: #e1bee7; --dark-lilac: #7b1fa2; --soft-pink: #fce4ec; 
+            --apple-gray: #f2f2f7; --accent-red: #ff2d55; --accent-green: #34c759; --accent-orange: #ff9500; 
+        }
         body { font-family: 'Poppins', sans-serif; background: var(--apple-gray); margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; color: #1d1d1f; }
-        
         .app-container { width: 100%; max-width: 414px; height: 100vh; background: #ffffff; position: relative; display: flex; flex-direction: column; overflow: hidden; }
         @media (min-width: 414px) { .app-container { height: 90vh; max-height: 850px; border-radius: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.1); border: 8px solid #ffffff; } }
-        
-        .header { padding: 30px 20px 15px; background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(20px); text-align: center; border-bottom: 1px solid rgba(0,0,0,0.05); z-index: 100; flex-shrink: 0; }
-        .header h2 { margin: 0; font-size: 22px; font-weight: 700; color: var(--dark-lilac); display: flex; justify-content: center; align-items: center; gap: 8px; }
-
+        .header { padding: 30px 20px 15px; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); text-align: center; border-bottom: 1px solid rgba(0,0,0,0.05); z-index: 100; flex-shrink: 0; }
+        .header h2 { margin: 0; font-size: 22px; font-weight: 700; color: var(--dark-lilac); }
         .content-area { flex: 1; overflow-y: auto; padding: 20px 20px 100px; background: #fbfbfd; scroll-behavior: smooth; }
         .screen { display: none; animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .active-screen { display: block; }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
-
-        /* Dashboard Cards */
+        @keyframes slideIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .total-pot-card { background: linear-gradient(135deg, var(--main-lilac), #f8bbd0); padding: 25px; border-radius: 28px; color: var(--dark-lilac); text-align: center; margin-bottom: 20px; box-shadow: 0 12px 24px rgba(123, 31, 162, 0.12); }
         .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-        .stat-card { background: #ffffff; padding: 15px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid var(--soft-pink); text-align: center; }
-        .stat-card .label { font-size: 11px; color: #86868b; text-transform: uppercase; font-weight: 600; }
-        .stat-card .value { font-size: 18px; font-weight: 700; color: var(--dark-lilac); margin-top: 4px; }
-
-        /* YENİ: Gelişmiş Finans Kartı */
-        .total-pot-card { background: linear-gradient(135deg, var(--main-lilac), #f8bbd0); padding: 25px 25px 15px; border-radius: 25px; color: var(--dark-lilac); margin-bottom: 20px; box-shadow: 0 10px 20px rgba(123, 31, 162, 0.15); }
-        .total-pot-card .main-section { text-align: center; }
-        .total-pot-card .label { font-size: 13px; font-weight: 600; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.5px;}
-        .total-pot-card .amount { font-size: 42px; font-weight: 800; margin: 5px 0; }
-        .total-pot-card .sub-stats { display: flex; justify-content: space-between; margin-top: 15px; border-top: 1px solid rgba(123, 31, 162, 0.15); padding-top: 15px; }
-        .sub-stat-item { flex: 1; }
-        .sub-stat-item:last-child { text-align: right; border-left: 1px solid rgba(123, 31, 162, 0.15); padding-left: 15px;}
-        .sub-stat-item .sub-label { font-size: 11px; font-weight: 600; opacity: 0.8; margin-bottom: 2px;}
-        .sub-stat-item .sub-value { font-size: 16px; font-weight: 700; }
-        .text-green { color: #2e7d32; }
-        .text-red { color: #c62828; }
-
-        /* Forms & Buttons */
+        .stat-card { background: #ffffff; padding: 18px; border-radius: 22px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); border: 1px solid var(--soft-pink); text-align: center; }
         .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-size: 13px; color: #86868b; margin-bottom: 6px; font-weight: 500; padding-left: 5px; }
-        .modern-input { width: 100%; box-sizing: border-box; padding: 16px 20px; border: 2px solid #efeff4; border-radius: 18px; background: #ffffff; font-size: 16px; font-family: inherit; transition: 0.3s; }
+        .input-group label { display: block; font-size: 13px; color: #86868b; margin-bottom: 8px; font-weight: 600; padding-left: 5px; }
+        .modern-input { width: 100%; box-sizing: border-box; padding: 16px 20px; border: 2px solid #efeff4; border-radius: 18px; background: #f5f5f7; font-size: 16px; font-family: inherit; transition: 0.2s; }
         .modern-input:focus { border-color: var(--main-lilac); outline: none; background: #fff; }
-        
-        .primary-btn { width: 100%; padding: 18px; border: none; border-radius: 20px; background: var(--dark-lilac); color: white; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.3s; margin-top: 10px; }
-        .primary-btn:active { transform: scale(0.97); opacity: 0.9; }
+        .primary-btn { width: 100%; padding: 18px; border: none; border-radius: 20px; background: var(--dark-lilac); color: white; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.2s; box-shadow: 0 8px 16px rgba(123, 31, 162, 0.2); }
+        .primary-btn:active { transform: scale(0.96); }
         .secondary-btn { background: var(--soft-pink); color: var(--dark-lilac); box-shadow: none; margin-top: 10px; }
-
-        .flex-row { display: flex; gap: 10px; align-items: center; margin-bottom: 20px; }
-        .flex-row .modern-input { margin-bottom: 0; }
-        .flex-row .primary-btn { margin-top: 0; padding: 16px 20px; width: auto; white-space: nowrap; }
-
-        /* Social/History List */
-        .list-item { background: white; border-radius: 20px; padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(0,0,0,0.02); box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
-        .friend-item { cursor: pointer; transition: 0.2s; border-left: 4px solid var(--dark-lilac); }
-        .friend-item:active { transform: scale(0.98); background: #fafafa; }
-        .item-info .title { font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 5px;}
-        .item-info .sub { font-size: 12px; color: #86868b; }
-        .item-val { font-weight: 700; font-size: 16px; color: var(--accent-red); }
-
-        .chart-container { background: white; border-radius: 20px; padding: 15px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.02); }
-
-        /* Modal */
+        .list-item { background: white; border-radius: 20px; padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(0,0,0,0.02); }
+        .bottom-nav { position: absolute; bottom: 0; width: 100%; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(25px); display: none; justify-content: space-around; padding: 12px 0 34px; border-top: 1px solid rgba(0,0,0,0.05); }
+        .nav-link { display: flex; flex-direction: column; align-items: center; color: #8e8e93; font-size: 11px; cursor: pointer; flex: 1; }
+        .nav-link.active { color: var(--dark-lilac); font-weight: 600; }
+        .payment-btn { border: none; border-radius: 12px; padding: 8px 12px; color: white; font-size: 12px; font-weight: 600; cursor: pointer; }
+        .btn-unpaid { background: var(--accent-red); } .btn-paid { background: var(--accent-green); }
         .modal-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(5px); z-index: 200; display: none; justify-content: center; align-items: center; }
-        .modal-content { background: white; width: 85%; padding: 25px; border-radius: 25px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-        @keyframes popIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-        .modal-btn { background: #f2f2f7; border: none; padding: 15px; width: 100%; border-radius: 15px; margin-bottom: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.2s; color: #1d1d1f; }
-        .modal-btn.partner { background: linear-gradient(135deg, #ff2d55, #ff3b30); color: white; }
-        .modal-btn.group { background: var(--dark-lilac); color: white; }
-        .modal-btn:active { transform: scale(0.95); }
-
-        /* Navigation */
-        .bottom-nav { position: absolute; bottom: 0; width: 100%; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(25px); display: none; justify-content: space-around; padding: 12px 0 30px; border-top: 1px solid rgba(0,0,0,0.05); }
-        .nav-link { display: flex; flex-direction: column; align-items: center; color: #8e8e93; font-size: 10px; text-decoration: none; font-weight: 500; cursor: pointer; flex: 1; }
-        .nav-link.active { color: var(--dark-lilac); }
-        .nav-link span { font-size: 22px; margin-bottom: 4px; }
+        .modal-content { background: white; width: 85%; padding: 25px; border-radius: 25px; text-align: center; }
     </style>
 </head>
 <body>
-
     <div class="app-container">
-        <div class="header">
-            <h2 id="headerTitle">🐈 Miyav & Hav Yatırım</h2>
-        </div>
-
+        <div class="header"><h2>🐾 Miyav & Hav Yatırım</h2></div>
         <div class="content-area">
             <div id="loginScreen" class="screen active-screen">
-                <div style="text-align: center; margin: 20px 0;">
-                    <span style="font-size: 60px;">🐶🐈</span>
-                    <h3>Pati Girişi</h3>
-                    <p style="color: #86868b;">Hoş geldiniz, lütfen kimliğinizi doğrulayın.</p>
-                </div>
-                <div class="input-group">
-                    <label>Kullanıcı Adı</label>
-                    <input type="text" id="loginUser" class="modern-input">
-                </div>
-                <div class="input-group">
-                    <label>PIN (4 Haneli)</label>
-                    <input type="password" id="loginPin" class="modern-input" maxlength="4" placeholder="••••" inputmode="numeric">
-                </div>
-                <button class="primary-btn" onclick="app.login()">Patini Bas ve Gir</button>
-                <p id="loginError" style="color:var(--accent-red); font-size:12px; text-align:center; display:none; margin-top:15px; background:#fff1f1; padding:10px; border-radius:10px;"></p>
+                <div style="text-align: center; margin: 40px 0;"><span style="font-size: 80px;">🐶🐈</span><h3>Hoş Geldiniz</h3><p style="color: #86868b;">Giriş yaparak pati dünyasına dalın.</p></div>
+                <div class="input-group"><label>Kullanıcı Adı</label><input type="text" id="loginUser" class="modern-input" placeholder="İsminiz"></div>
+                <div class="input-group"><label>PIN</label><input type="password" id="loginPin" class="modern-input" maxlength="4" placeholder="••••" inputmode="numeric"></div>
+                <button class="primary-btn" onclick="app.login()">Giriş Yap 🐾</button>
+                <p id="loginError" style="color:red; display:none; text-align:center; margin-top:15px;">Hatalı Giriş!</p>
             </div>
 
             <div id="homeScreen" class="screen">
                 <div class="total-pot-card">
-                    <div class="main-section">
-                        <div class="label">🚨 Toplam Ödenmemiş Ceza</div>
-                        <div class="amount" id="totalUnpaidDisplay">₺0.00</div>
-                    </div>
-                    <div class="sub-stats">
-                        <div class="sub-stat-item">
-                            <div class="sub-label">Bugünkü Ceza</div>
-                            <div class="sub-value text-red" id="todayPenaltyDisplay">₺0.00</div>
-                        </div>
-                        <div class="sub-stat-item">
-                            <div class="sub-label">Toplam Ödenen</div>
-                            <div class="sub-value text-green" id="totalPaidDisplay">₺0.00</div>
-                        </div>
+                    <div class="label" style="font-weight:600; letter-spacing:1px;">🚨 ORTAK ÖDENMEMİŞ</div>
+                    <div class="amount" id="totalUnpaidDisplay" style="font-size:42px; font-weight:800; margin:10px 0;">₺0.00</div>
+                    <div style="display:flex; justify-content:space-around; margin-top:15px; font-size:13px; font-weight:600;">
+                        <div>Bugün: <span id="todayPenaltyDisplay">₺0.00</span></div>
+                        <div>Ödenen: <span id="totalPaidDisplay" style="color:#2e7d32;">₺0.00</span></div>
                     </div>
                 </div>
-
-                <div class="stat-grid">
-                    <div class="stat-card">
-                        <div class="label">Geçerli Limit</div>
-                        <div class="value" id="userLimitDisplay">180 dk</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="label">Geçerli Çarpan</div>
-                        <div class="value" id="userRateDisplay">1.0₺</div>
-                    </div>
-                </div>
-                <div style="text-align:center; margin-bottom:15px; font-size:12px; color:#86868b;" id="connectionStatus">Bireysel Ayarlar Kullanılıyor</div>
-                
-                <div class="input-group">
-                    <label>Bugünkü Ekran Süren (Dakika)</label>
-                    <input type="number" id="screenTimeInput" class="modern-input" placeholder="0" inputmode="numeric">
-                </div>
-                <button class="primary-btn" id="saveBtn" onclick="app.saveLog()">Süreyi Kaydet 🦴</button>
+                <div class="input-group"><label>Tarih Seç</label><input type="date" id="screenTimeDate" class="modern-input"></div>
+                <div class="input-group"><label>Ekran Süresi (Dakika)</label><input type="number" id="screenTimeInput" class="modern-input" placeholder="0"></div>
+                <button class="primary-btn" onclick="app.saveLog()">Süreyi Kaydet 🦴</button>
             </div>
 
-            <div id="friendsScreen" class="screen">
-                <h3>🐕 Pati Dostları</h3>
-                <p style="color:#86868b; font-size: 13px; margin-bottom: 20px;">Bağlantı kurmak veya profilini görmek için isme tıkla!</p>
-                
-                <div class="flex-row">
-                    <input type="text" id="addFriendInput" class="modern-input">
-                    <button class="primary-btn" onclick="app.addFriend()" id="addFriendBtn">Ekle</button>
-                </div>
+            <div id="paymentsScreen" class="screen"><h3>💳 Borç Takibi</h3><div id="paymentsListContainer"></div></div>
 
-                <div id="friendsList"></div>
-            </div>
+            <div id="friendsScreen" class="screen"><h3>🐕 Dostlar</h3><div class="flex-row"><input type="text" id="addFriendInput" class="modern-input"><button class="primary-btn" onclick="app.addFriend()" style="width:auto; padding:15px;">Ekle</button></div><div id="friendsList"></div></div>
 
             <div id="friendProfileScreen" class="screen">
-                <button class="primary-btn secondary-btn" onclick="app.switchTab('friendsScreen', document.querySelectorAll('.nav-link')[1])" style="width: auto; padding: 10px 15px; margin-bottom: 15px; font-size:13px;">⬅ Geri Dön</button>
-                
-                <div style="text-align: center; margin-bottom:20px;">
-                    <span style="font-size: 50px;">🐾</span>
-                    <h3 id="fpName" style="margin:5px 0;">İsim</h3>
-                    <p style="color:var(--dark-lilac); font-size: 13px; font-weight:600; margin:0;" id="fpStatus">💖 Partnerin</p>
-                </div>
-                
+                <button class="primary-btn secondary-btn" onclick="app.switchTab('friendsScreen', document.querySelectorAll('.nav-link')[2])" style="width: auto;">⬅ Geri</button>
+                <h3 id="fpName" style="text-align:center;">Partner</h3>
+                <div class="total-pot-card" style="background:white; border:2px solid red; color:red; box-shadow:none;"><div class="label" style="color:black;">Ödenmemiş Borcu</div><div class="amount" id="fpTotal">₺0.00</div></div>
+                <h4>📜 Kayıtları</h4><div id="fpHistoryList"></div>
+            </div>
+
+            <div id="myProfileScreen" class="screen">
+                <h3 style="text-align:center;">🤝 Ortak Panel</h3>
                 <div class="stat-grid">
-                    <div class="stat-card">
-                        <div class="label">Güncel Limiti</div>
-                        <div class="value" id="fpLimit">180 dk</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="label">Güncel Çarpanı</div>
-                        <div class="value" id="fpRate">1.0₺</div>
-                    </div>
+                    <div class="stat-card"><div class="label">Limit</div><div class="value" id="sharedLimitDisplay">180 dk</div></div>
+                    <div class="stat-card"><div class="label">Çarpan</div><div class="value" id="sharedRateDisplay">1.0₺</div></div>
                 </div>
-                
-                <div class="total-pot-card" style="padding: 15px; background: white; border: 2px solid var(--accent-red); color: var(--accent-red); box-shadow:none;">
-                    <div class="main-section">
-                        <div class="label" style="opacity:1; color:#1d1d1f;">Ona Ait Ödenmemiş Ceza</div>
-                        <div class="amount" style="font-size: 28px;" id="fpTotal">₺0.00</div>
-                    </div>
+                <div class="total-pot-card" style="background:white; border:2px solid var(--dark-lilac); color:var(--dark-lilac); box-shadow:none; text-align:center;">
+                    <div class="label" style="color:black;">Kimin Ne Kadar Borcu Var?</div><div id="personalDebtSummary" style="margin-top:15px; font-weight:600;"></div>
                 </div>
-
-                <h4 style="color:var(--dark-lilac); margin-top:25px;">📜 Onun Geçmiş Kayıtları</h4>
-                <div id="fpHistoryList"></div>
+                <button class="primary-btn secondary-btn" onclick="app.switchTab('historyScreen', document.querySelectorAll('.nav-link')[4])">Grafiğe Git 📊</button>
             </div>
 
-            <div id="historyScreen" class="screen">
-                <h3>📜 Kayıt Defteri</h3>
-                <div class="chart-container">
-                    <canvas id="penaltyChart" height="150"></canvas>
-                </div>
-                <div id="historyList"></div>
-            </div>
+            <div id="historyScreen" class="screen"><h3>📜 Geçmiş</h3><div class="chart-container"><canvas id="penaltyChart" height="150"></canvas></div><div id="historyList"></div></div>
 
             <div id="settingsScreen" class="screen">
-                <h3>⚙️ Ortak Ayarlar</h3>
-                <p style="color:#86868b; font-size: 13px; margin-bottom: 20px;">Burada yaptığın değişiklikler eşleştiğin kişiyi de etkiler.</p>
-                
-                <div class="input-group">
-                    <label>Ortak Günlük Limit (Dakika)</label>
-                    <input type="number" id="setLimit" class="modern-input">
-                </div>
-                <div class="input-group">
-                    <label>Ortak Ceza Çarpanı (₺)</label>
-                    <input type="number" step="0.1" id="setRate" class="modern-input">
-                </div>
-                <button class="primary-btn" onclick="app.updateSettings()">Ayarları Herkes İçin Güncelle</button>
-                
-                <hr style="border:0; border-top:1px solid rgba(0,0,0,0.05); margin:25px 0;">
-                
-                <h4 style="margin-bottom:10px; color:var(--dark-lilac);">Tehlikeli Bölge</h4>
-                <button class="primary-btn" onclick="app.resetPot()" style="background: var(--accent-orange); margin-top:0;">🧹 Kasayı Sıfırla (Ödendi)</button>
-                <button class="primary-btn" onclick="app.disconnect()" style="background: var(--accent-red);">💔 Bağlantıyı Kopar</button>
-                
-                <button class="primary-btn secondary-btn" style="margin-top:20px;" onclick="app.logout()">Güvenli Çıkış</button>
+                <h3>⚙️ Ayarlar</h3>
+                <div class="input-group"><label>Günlük Limit</label><input type="number" id="setLimit" class="modern-input"></div>
+                <div class="input-group"><label>Ceza Çarpanı</label><input type="number" step="0.1" id="setRate" class="modern-input"></div>
+                <button class="primary-btn" onclick="app.updateSettings()">Güncelle</button>
+                <button class="primary-btn" onclick="app.disconnect()" style="background:red; margin-top:30px;">Bağlantıyı Kopar 💔</button>
+                <button class="primary-btn secondary-btn" onclick="app.logout()">Çıkış Yap</button>
             </div>
         </div>
 
         <nav class="bottom-nav" id="bottomNav">
             <div class="nav-link active" onclick="app.switchTab('homeScreen', this)"><span>🏠</span>Ev</div>
-            <div class="nav-link" onclick="app.switchTab('friendsScreen', this)"><span>🐕</span>Bağlantılar</div>
+            <div class="nav-link" onclick="app.switchTab('paymentsScreen', this)"><span>💳</span>Borçlar</div>
+            <div class="nav-link" onclick="app.switchTab('friendsScreen', this)"><span>🐕</span>Dostlar</div>
+            <div class="nav-link" onclick="app.switchTab('myProfileScreen', this)"><span>👤</span>Profil</div>
             <div class="nav-link" onclick="app.switchTab('historyScreen', this)"><span>📜</span>Geçmiş</div>
             <div class="nav-link" onclick="app.switchTab('settingsScreen', this)"><span>⚙️</span>Ayarlar</div>
         </nav>
 
-        <div id="connectionModal" class="modal-overlay">
-            <div class="modal-content">
-                <span style="font-size: 40px; margin-bottom: 10px; display: block;">🤝</span>
-                <h3 id="modalTitle" style="margin-top: 0;">Bağlantı Kur</h3>
-                <p style="color:#86868b; font-size:13px; margin-bottom: 20px;">Ayarlarınız ve cezalarınız ortak hesaplanacak. Nasıl bağlanmak istersin?</p>
-                
-                <button class="modal-btn partner" onclick="app.makeConnection('partner')">💖 Partner Ol (Sadece İkimiz)</button>
-                <button class="modal-btn group" onclick="app.makeConnection('group')">👨‍👩‍👧‍👦 Gruba Ekle (Çoklu Kullanım)</button>
-                <button class="modal-btn" onclick="app.closeModal()">İptal Et</button>
-            </div>
-        </div>
+        <div id="connectionModal" class="modal-overlay"><div class="modal-content"><h3>Bağlan</h3><button class="modal-btn" onclick="app.makeConnection()" style="background:var(--dark-lilac); color:white; padding:15px; width:100%; border:none; border-radius:15px;">💖 Partner Ol</button><button class="modal-btn" onclick="app.closeModal()" style="margin-top:10px; border:none; background:none;">İptal</button></div></div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
         import { getFirestore, collection, addDoc, query, where, getDocs, doc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyDsBBHVbNmcbeToQ-zXjFIt68RfhYl5qds",
-            authDomain: "miyav-yatirim.firebaseapp.com",
-            projectId: "miyav-yatirim",
-            storageBucket: "miyav-yatirim.firebasestorage.app",
-            messagingSenderId: "442761859255",
-            appId: "1:442761859255:web:794c98053f761f1df7bd32"
-        };
-
-        const fApp = initializeApp(firebaseConfig);
-        const db = getFirestore(fApp);
-
+        const firebaseConfig = { apiKey: "AIzaSyDsBBHVbNmcbeToQ-zXjFIt68RfhYl5qds", authDomain: "miyav-yatirim.firebaseapp.com", projectId: "miyav-yatirim", storageBucket: "miyav-yatirim.firebasestorage.app", messagingSenderId: "442761859255", appId: "1:442761859255:web:794c98053f761f1df7bd32" };
+        const fApp = initializeApp(firebaseConfig); const db = getFirestore(fApp);
         const app = {
-            currentUser: null,
-            userRef: null,
-            currentSettings: { limit: 180, rate: 1.0 },
-            selectedFriend: "",
-            settingsListener: null,
-
-            init() {
-                // YENİ: 3 Farklı Değeri Hesaplayan Dinleyici
-                onSnapshot(collection(db, "logs"), (snapshot) => {
-                    let totalUnpaid = 0;
-                    let totalPaid = 0;
-                    let todayPenalty = 0;
-                    
-                    // Bugünün tarihini veri tabanındaki formata çeviriyoruz
-                    const todayStr = new Date().toLocaleDateString('tr-TR', { day: '2-digit', month: '2-digit' });
-
-                    snapshot.forEach(doc => {
-                        const data = doc.data();
-                        const isMyLog = data.userId === this.currentUser.id;
-                        const isGroupLog = this.currentUser.groupId && data.groupId === this.currentUser.groupId;
-                        
-                        if (isMyLog || isGroupLog) {
-                            const penalty = data.penalty || 0;
-                            
-                            if (data.cleared) {
-                                // Ayarlardan sıfırlanmış (ödenmiş) olanlar
-                                totalPaid += penalty;
-                            } else {
-                                // Hala ödenmemiş olanlar
-                                totalUnpaid += penalty;
-                                
-                                // Bugün kesilen cezalar
-                                if (data.date === todayStr) {
-                                    todayPenalty += penalty;
-                                }
-                            }
-                        }
-                    });
-                    
-                    // Ekranı Güncelle
-                    document.getElementById('totalUnpaidDisplay').innerText = `₺${totalUnpaid.toFixed(2)}`;
-                    document.getElementById('totalPaidDisplay').innerText = `₺${totalPaid.toFixed(2)}`;
-                    document.getElementById('todayPenaltyDisplay').innerText = `₺${todayPenalty.toFixed(2)}`;
-                });
-            },
-
+            currentUser: null, userRef: null, currentSettings: { limit: 180, rate: 1.0 }, settingsListener: null,
             async login() {
-                const user = document.getElementById('loginUser').value.trim();
-                const pin = document.getElementById('loginPin').value.trim();
-                const err = document.getElementById('loginError');
-
-                if(!user || pin.length !== 4) { err.innerText = "Lütfen geçerli isim ve 4 haneli PIN girin."; err.style.display = "block"; return; }
-
-                const name = user.charAt(0).toUpperCase() + user.slice(1).toLowerCase();
-                const q = query(collection(db, "users"), where("username", "==", name));
-                const snap = await getDocs(q);
-
-                if(snap.empty) {
-                    const newDoc = await addDoc(collection(db, "users"), { username: name, pin, dailyLimit: 180, penaltyRate: 1.0, friends: [], groupId: null });
-                    this.setupUser({id: newDoc.id, username: name, dailyLimit: 180, penaltyRate: 1.0, friends: [], groupId: null});
-                } else {
-                    const userData = snap.docs[0].data();
-                    if(userData.pin === pin) { this.setupUser({id: snap.docs[0].id, ...userData}); } 
-                    else { err.innerText = "Hatalı PIN. Tekrar deneyin."; err.style.display = "block"; }
-                }
+                const u = document.getElementById('loginUser').value.trim(), p = document.getElementById('loginPin').value.trim();
+                if(!u || p.length !== 4) return;
+                const name = u.charAt(0).toUpperCase() + u.slice(1).toLowerCase();
+                try {
+                    const snap = await getDocs(query(collection(db, "users"), where("username", "==", name)));
+                    if(snap.empty) {
+                        const nD = await addDoc(collection(db, "users"), { username: name, pin: p, dailyLimit: 180, penaltyRate: 1.0, friends: [], groupId: null });
+                        this.setupUser({id: nD.id, username: name, dailyLimit: 180, penaltyRate: 1.0, friends: [], groupId: null});
+                    } else {
+                        const uD = snap.docs[0].data();
+                        if(uD.pin === p) this.setupUser({id: snap.docs[0].id, ...uD});
+                        else document.getElementById('loginError').style.display = "block";
+                    }
+                } catch(e) { alert("Bağlantı hatası!"); }
             },
-
             setupUser(data) {
-                if (!data.friends) data.friends = []; 
-                this.currentUser = data;
-                this.userRef = doc(db, "users", data.id);
-                
+                this.currentUser = data; this.userRef = doc(db, "users", data.id);
+                document.getElementById('screenTimeDate').value = new Date(new Date().getTime() - (new Date().getTimezoneOffset() * 60000)).toISOString().split('T')[0];
                 document.getElementById('bottomNav').style.display = "flex";
                 this.switchTab('homeScreen', document.querySelector('.nav-link'));
-                this.init();
-                this.listenToSettings(); 
+                this.init(); this.listenToSettings(); 
             },
-
-            listenToSettings() {
-                if(this.settingsListener) this.settingsListener(); 
-                if(this.currentUser.groupId) {
-                    this.settingsListener = onSnapshot(doc(db, "groups", this.currentUser.groupId), (d) => {
-                        if(d.exists()) {
-                            const groupData = d.data();
-                            this.currentSettings = { limit: groupData.dailyLimit, rate: groupData.penaltyRate };
-                            this.updateSettingsUI(groupData.type === 'partner' ? '💖 Partner Bağlantısı Aktif' : '👨‍👩‍👧‍👦 Grup Bağlantısı Aktif');
+            init() {
+                onSnapshot(collection(db, "logs"), (snap) => {
+                    let unpaid = 0, paid = 0, today = 0, summary = {};
+                    const tStr = new Date().toLocaleDateString('tr-TR', { day: '2-digit', month: '2-digit' });
+                    snap.forEach(dS => {
+                        const d = dS.data();
+                        if (d.userId === this.currentUser.id || (this.currentUser.groupId && d.groupId === this.currentUser.groupId)) {
+                            const p = d.penalty || 0;
+                            if (d.cleared) paid += p; else { unpaid += p; if (d.date === tStr) today += p; summary[d.username] = (summary[d.username] || 0) + p; }
                         }
                     });
-                } else {
-                    this.currentSettings = { limit: this.currentUser.dailyLimit, rate: this.currentUser.penaltyRate };
-                    this.updateSettingsUI('👤 Bireysel Ayarlar Kullanılıyor');
-                }
+                    document.getElementById('totalUnpaidDisplay').innerText = `₺${unpaid.toFixed(2)}`;
+                    document.getElementById('totalPaidDisplay').innerText = `₺${paid.toFixed(2)}`;
+                    document.getElementById('todayPenaltyDisplay').innerText = `₺${today.toFixed(2)}`;
+                    let sHtml = ""; for(let u in summary) sHtml += `<div>${u}: ₺${summary[u].toFixed(2)}</div>`;
+                    document.getElementById('personalDebtSummary').innerHTML = sHtml || "Tertemiz! ✨";
+                });
             },
-
-            updateSettingsUI(statusMsg) {
-                document.getElementById('connectionStatus').innerText = statusMsg;
-                document.getElementById('userLimitDisplay').innerText = this.currentSettings.limit + " dk";
-                document.getElementById('userRateDisplay').innerText = this.currentSettings.rate + "₺";
+            listenToSettings() {
+                if(this.settingsListener) this.settingsListener();
+                if(this.currentUser.groupId) {
+                    this.settingsListener = onSnapshot(doc(db, "groups", this.currentUser.groupId), (d) => {
+                        if(d.exists()) { const gd = d.data(); this.currentSettings = { limit: gd.dailyLimit, rate: gd.penaltyRate }; this.updateUI(); }
+                    });
+                } else { this.currentSettings = { limit: this.currentUser.dailyLimit, rate: this.currentUser.penaltyRate }; this.updateUI(); }
+            },
+            updateUI() {
+                document.getElementById('sharedLimitDisplay').innerText = this.currentSettings.limit + " dk";
+                document.getElementById('sharedRateDisplay').innerText = this.currentSettings.rate + "₺";
                 document.getElementById('setLimit').value = this.currentSettings.limit;
                 document.getElementById('setRate').value = this.currentSettings.rate;
             },
-
-            async updateSettings() {
-                const limit = parseInt(document.getElementById('setLimit').value);
-                const rate = parseFloat(document.getElementById('setRate').value);
-
-                if (this.currentUser.groupId) {
-                    await updateDoc(doc(db, "groups", this.currentUser.groupId), { dailyLimit: limit, penaltyRate: rate });
-                } else {
-                    await updateDoc(this.userRef, { dailyLimit: limit, penaltyRate: rate });
-                    this.currentUser.dailyLimit = limit;
-                    this.currentUser.penaltyRate = rate;
-                    this.listenToSettings();
-                }
-                alert("Ortak Ayarlar güncellendi! ✅");
-            },
-
-            async resetPot() {
-                if(!confirm("Kasadaki tüm cezaların ödendiğini onaylıyor ve sayacı sıfırlamak istiyor musun?")) return;
-                let q = this.currentUser.groupId ? query(collection(db, "logs"), where("groupId", "==", this.currentUser.groupId)) : query(collection(db, "logs"), where("userId", "==", this.currentUser.id));
-                const snap = await getDocs(q);
-                snap.forEach(async (d) => { await updateDoc(doc(db, "logs", d.id), { cleared: true }); });
-                alert("Kasa sıfırlandı! Tüm borçlar ödendi sayfasına geçti. 🧹");
-            },
-
-            async disconnect() {
-                if(!confirm("Emin misin? Ortak ayarlar, kasa ve partner bağlantın TAMAMEN kopacak!")) return;
-                await updateDoc(this.userRef, { groupId: null, friends: [] });
-                this.currentUser.groupId = null;
-                this.currentUser.friends = [];
-                alert("Bağlantı koptu. Artık kendi başınasın. 💔");
-                location.reload(); 
-            },
-
-            async addFriend() {
-                const friendInput = document.getElementById('addFriendInput').value.trim();
-                if(!friendInput) return;
-                const friendName = friendInput.charAt(0).toUpperCase() + friendInput.slice(1).toLowerCase();
-                
-                if(friendName === this.currentUser.username) return alert("Kendini ekleyemezsin!");
-                if(this.currentUser.friends.includes(friendName)) return alert("Zaten listende!");
-
-                const q = query(collection(db, "users"), where("username", "==", friendName));
-                const snap = await getDocs(q);
-
-                if(snap.empty) {
-                    alert(`"${friendName}" bulunamadı. Önce kayıt olması gerekiyor!`);
-                } else {
-                    const newFriendsList = [...this.currentUser.friends, friendName];
-                    await updateDoc(this.userRef, { friends: newFriendsList });
-                    this.currentUser.friends = newFriendsList;
-                    alert(`🎉 ${friendName} listene eklendi!`);
-                    document.getElementById('addFriendInput').value = "";
-                    this.loadFriends(); 
-                }
-            },
-
-            handleFriendClick(friendName, isConnected) {
-                if(isConnected) {
-                    this.openFriendProfile(friendName);
-                } else {
-                    this.selectedFriend = friendName;
-                    document.getElementById('modalTitle').innerText = `${friendName} ile Bağlan`;
-                    document.getElementById('connectionModal').style.display = 'flex';
-                }
-            },
-
-            async openFriendProfile(friendName) {
-                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
-                document.getElementById('friendProfileScreen').classList.add('active-screen');
-
-                document.getElementById('fpName').innerText = friendName;
-                document.getElementById('fpHistoryList').innerHTML = "<p style='text-align:center; color:#86868b;'>Kayıtlar aranıyor...</p>";
-
-                const uQ = query(collection(db, "users"), where("username", "==", friendName));
-                const uSnap = await getDocs(uQ);
-                if(!uSnap.empty) {
-                    document.getElementById('fpLimit').innerText = this.currentSettings.limit + " dk";
-                    document.getElementById('fpRate').innerText = this.currentSettings.rate + "₺";
-                }
-
-                const lQ = query(collection(db, "logs"), where("username", "==", friendName));
-                const lSnap = await getDocs(lQ);
-                
-                let totalPenalty = 0;
-                let logs = [];
-                
-                lSnap.forEach(doc => { logs.push(doc.data()); });
-                logs.sort((a,b) => b.timestamp - a.timestamp); 
-                logs = logs.slice(0, 15); 
-
-                const list = document.getElementById('fpHistoryList');
-                list.innerHTML = "";
-
-                if(logs.length === 0) {
-                    list.innerHTML = "<p style='text-align:center; color:#86868b;'>Henüz kayıt girmemiş.</p>";
-                } else {
-                    logs.forEach(d => {
-                        if(!d.cleared) totalPenalty += (d.penalty || 0);
-
-                        const statusText = d.cleared ? '<span style="color:#34c759; font-size:10px;">(Ödendi)</span>' : '';
-                        list.innerHTML += `<div class="list-item">
-                            <div class="item-info"><div class="title">${d.minutes} Dakika</div><div class="sub">${d.date} ${statusText}</div></div>
-                            <div class="item-val" style="color:${d.penalty > 0 ? (d.cleared ? '#86868b' : 'var(--accent-red)') : 'var(--accent-green)'}">₺${d.penalty.toFixed(2)}</div>
-                        </div>`;
-                    });
-                }
-                document.getElementById('fpTotal').innerText = `₺${totalPenalty.toFixed(2)}`;
-            },
-
-            closeModal() {
-                document.getElementById('connectionModal').style.display = 'none';
-                this.selectedFriend = "";
-            },
-
-            async makeConnection(type) {
-                const btn = document.querySelector('.modal-content');
-                btn.style.opacity = "0.5";
-
-                const q = query(collection(db, "users"), where("username", "==", this.selectedFriend));
-                const snap = await getDocs(q);
-                if(snap.empty) return;
-                const friendDoc = snap.docs[0];
-
-                let finalGroupId = this.currentUser.groupId;
-
-                if (type === 'group' && finalGroupId) {
-                    await updateDoc(doc(db, "users", friendDoc.id), { groupId: finalGroupId });
-                } else {
-                    const newGroup = await addDoc(collection(db, "groups"), { type: type, dailyLimit: this.currentSettings.limit, penaltyRate: this.currentSettings.rate });
-                    finalGroupId = newGroup.id;
-                    await updateDoc(this.userRef, { groupId: finalGroupId });
-                    await updateDoc(doc(db, "users", friendDoc.id), { groupId: finalGroupId });
-                    this.currentUser.groupId = finalGroupId;
-                }
-
-                btn.style.opacity = "1";
-                this.closeModal();
-                alert(`Bağlantı Kuruldu! Artık ayarlarınız ${this.selectedFriend} ile ortak. 🚀`);
-                this.listenToSettings(); 
-            },
-
             async saveLog() {
-                const mins = parseInt(document.getElementById('screenTimeInput').value);
-                if(!mins || mins < 0) return alert("Lütfen süre girin.");
-
-                const btn = document.getElementById('saveBtn');
-                btn.disabled = true;
-
-                const penalty = Math.max(0, (mins - this.currentSettings.limit) * this.currentSettings.rate);
-
+                const dV = document.getElementById('screenTimeDate').value, mins = parseInt(document.getElementById('screenTimeInput').value);
+                if(!dV || isNaN(mins)) return;
+                const p = Math.max(0, (mins - this.currentSettings.limit) * this.currentSettings.rate);
                 await addDoc(collection(db, "logs"), {
-                    userId: this.currentUser.id,
-                    username: this.currentUser.username,
-                    groupId: this.currentUser.groupId || null,
-                    minutes: mins,
-                    penalty: penalty,
-                    cleared: false,
-                    date: new Date().toLocaleDateString('tr-TR', { day: '2-digit', month: '2-digit' }),
-                    timestamp: Date.now()
+                    userId: this.currentUser.id, username: this.currentUser.username, groupId: this.currentUser.groupId,
+                    minutes: mins, penalty: p, cleared: false, date: new Date(dV).toLocaleDateString('tr-TR', {day:'2-digit', month:'2-digit'}), timestamp: new Date(dV).getTime()
                 });
-
-                alert(penalty > 0 ? `Eyvah! ₺${penalty.toFixed(2)} ceza birikti.` : "Harika! Limit altındasın.");
-                document.getElementById('screenTimeInput').value = "";
-                btn.disabled = false;
+                alert("Kaydedildi!"); document.getElementById('screenTimeInput').value = "";
             },
-
-            switchTab(screenId, el) {
+            async loadPayments() {
+                const list = document.getElementById('paymentsListContainer'); list.innerHTML = "Yükleniyor...";
+                const q = this.currentUser.groupId ? query(collection(db, "logs"), where("groupId", "==", this.currentUser.groupId)) : query(collection(db, "logs"), where("userId", "==", this.currentUser.id));
+                const snap = await getDocs(q); let logs = []; snap.forEach(d => { let data = d.data(); data.id = d.id; logs.push(data); });
+                logs.sort((a,b) => b.timestamp - a.timestamp); list.innerHTML = "";
+                logs.forEach(d => {
+                    if(d.penalty > 0) list.innerHTML += `<div class="list-item"><div>${d.username}<br><small>${d.date}</small></div><div>₺${d.penalty.toFixed(2)} <button class="payment-btn ${d.cleared ? 'btn-paid':'btn-unpaid'}" onclick="app.togglePayment('${d.id}', ${d.cleared})">${d.cleared ? 'Ödendi':'Öde'}</button></div></div>`;
+                });
+            },
+            async togglePayment(id, s) { await updateDoc(doc(db, "logs", id), { cleared: !s }); this.loadPayments(); },
+            switchTab(id, el) {
                 document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
-                document.getElementById(screenId).classList.add('active-screen');
+                document.getElementById(id).classList.add('active-screen');
                 document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
                 if(el) el.classList.add('active');
-
-                if(screenId === 'historyScreen') this.loadHistory();
-                if(screenId === 'friendsScreen') this.loadFriends();
+                if(id === 'paymentsScreen') this.loadPayments();
+                if(id === 'historyScreen') this.loadHistory();
+                if(id === 'friendsScreen') this.loadFriends();
             },
-
             async loadHistory() {
-                const q = query(collection(db, "logs"), where("userId", "==", this.currentUser.id));
-                const snap = await getDocs(q);
-                const list = document.getElementById('historyList');
-                list.innerHTML = "";
-                
-                let chartLabels = [];
-                let chartData = [];
-                let logs = [];
-                
-                snap.forEach(doc => { logs.push(doc.data()); });
-                logs.sort((a,b) => b.timestamp - a.timestamp); 
-                logs = logs.slice(0, 15); 
-
-                if(logs.length === 0) { list.innerHTML = "<p style='text-align:center; color:#86868b; margin-top:20px;'>Kayıt yok.</p>"; return; }
-
-                const docsForChart = logs.slice().reverse();
-                docsForChart.forEach(d => {
-                    chartLabels.push(d.date); 
-                    chartData.push(d.minutes);
-                });
-
-                logs.forEach(d => {
-                    const statusText = d.cleared ? '<span style="color:#34c759; font-size:10px;">(Ödendi)</span>' : '';
-                    list.innerHTML += `<div class="list-item">
-                        <div class="item-info"><div class="title">${d.minutes} Dakika</div><div class="sub">${d.date} ${statusText}</div></div>
-                        <div class="item-val" style="color:${d.penalty > 0 ? (d.cleared ? '#86868b' : 'var(--accent-red)') : 'var(--accent-green)'}">₺${d.penalty.toFixed(2)}</div>
-                    </div>`;
-                });
-
-                this.renderChart(chartLabels, chartData);
+                const snap = await getDocs(query(collection(db, "logs"), where("userId", "==", this.currentUser.id)));
+                let logs = []; snap.forEach(d => logs.push(d.data())); logs.sort((a,b) => b.timestamp - a.timestamp);
+                const chartLogs = logs.slice(0,7).reverse();
+                this.renderChart(chartLogs.map(l => l.date), chartLogs.map(l => l.minutes));
+                const list = document.getElementById('historyList'); list.innerHTML = "";
+                logs.slice(0,10).forEach(d => list.innerHTML += `<div class="list-item"><div>${d.minutes} Dk<br><small>${d.date}</small></div><div style="color:${d.cleared ? '#888':'red'}">₺${d.penalty.toFixed(2)}</div></div>`);
             },
-
-            renderChart(labels, data) {
+            renderChart(l, d) {
                 const ctx = document.getElementById('penaltyChart').getContext('2d');
-                if(window.myChart) { window.myChart.destroy(); } 
-                
-                window.myChart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: labels,
-                        datasets: [{ label: 'Ekran Süresi (Dk)', data: data, borderColor: '#7b1fa2', backgroundColor: 'rgba(123, 31, 162, 0.1)', borderWidth: 3, fill: true, tension: 0.4, pointBackgroundColor: '#ff2d55', pointRadius: 4 }]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: true }, y: { beginAtZero: true } } }
+                if(window.myChart) window.myChart.destroy();
+                window.myChart = new Chart(ctx, { type: 'line', data: { labels: l, datasets: [{ label: 'Dk', data: d, borderColor: '#7b1fa2', fill: true, tension: 0.4 }] }, options: { responsive: true, maintainAspectRatio: false } });
+            },
+            async loadFriends() {
+                const list = document.getElementById('friendsList'); if(this.currentUser.friends.length === 0) { list.innerHTML = "Kimse yok."; return; }
+                const snap = await getDocs(query(collection(db, "users"), where("username", "in", this.currentUser.friends)));
+                list.innerHTML = ""; snap.forEach(d => {
+                    const u = d.data(); const conn = u.groupId && u.groupId === this.currentUser.groupId;
+                    list.innerHTML += `<div class="list-item" onclick="app.handleFriendClick('${u.username}', ${conn})"><div>${u.username} ${conn ? '💖':''}</div><div style="color:var(--dark-lilac)">${conn ? 'Bağlı':'Bağlan'}</div></div>`;
                 });
             },
-
-            async loadFriends() {
-                const list = document.getElementById('friendsList');
-                list.innerHTML = "<p style='text-align:center; color:#86868b;'>Yükleniyor...</p>";
-
-                if(this.currentUser.friends.length === 0) {
-                    list.innerHTML = `<div style="text-align:center; margin-top:30px;"><span style="font-size:40px; opacity:0.5;">📭</span><p style="color:#86868b; font-size:14px;">Henüz kimse yok.</p></div>`;
-                    return;
-                }
-
-                try {
-                    const q = query(collection(db, "users"), where("username", "in", this.currentUser.friends));
-                    const snap = await getDocs(q);
-                    
-                    list.innerHTML = "";
-                    snap.forEach(doc => {
-                        const u = doc.data();
-                        const isConnected = u.groupId && u.groupId === this.currentUser.groupId;
-                        const statusBadge = isConnected ? '🔗 Bağlandı' : 'Tıkla ve Bağlan';
-                        
-                        list.innerHTML += `<div class="list-item friend-item" onclick="app.handleFriendClick('${u.username}', ${isConnected})">
-                            <div class="item-info">
-                                <div class="title">${u.username} ${isConnected ? '💖' : ''}</div>
-                                <div class="sub">${isConnected ? 'Profili görüntülemek için dokun' : 'Ortak ayarlara geçmek için dokun'}</div>
-                            </div>
-                            <div class="item-val" style="color:var(--dark-lilac); font-size: 13px; font-weight: 500; background: #f3e5f5; padding: 5px 10px; border-radius: 10px;">${statusBadge}</div>
-                        </div>`;
-                    });
-                } catch (error) {
-                    list.innerHTML = "<p style='text-align:center; color:#ff3b30;'>Hata oluştu.</p>";
-                }
+            handleFriendClick(n, c) { if(c) this.openFriendProfile(n); else { this.selectedFriend = n; document.getElementById('connectionModal').style.display = 'flex'; } },
+            async openFriendProfile(name) {
+                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
+                document.getElementById('friendProfileScreen').classList.add('active-screen');
+                document.getElementById('fpName').innerText = name;
+                const snap = await getDocs(query(collection(db, "logs"), where("username", "==", name)));
+                let total = 0, logs = []; snap.forEach(d => { let data = d.data(); logs.push(data); if(!data.cleared) total += data.penalty; });
+                document.getElementById('fpTotal').innerText = `₺${total.toFixed(2)}`;
+                const list = document.getElementById('fpHistoryList'); list.innerHTML = "";
+                logs.sort((a,b) => b.timestamp - a.timestamp).slice(0,10).forEach(d => list.innerHTML += `<div class="list-item"><div>${d.minutes} Dk<br><small>${d.date}</small></div><div style="color:${d.cleared ? '#888':'red'}">₺${d.penalty.toFixed(2)}</div></div>`);
             },
-
-            logout() { location.reload(); }
+            async makeConnection() {
+                const snap = await getDocs(query(collection(db, "users"), where("username", "==", this.selectedFriend)));
+                const fD = snap.docs[0];
+                const nG = await addDoc(collection(db, "groups"), { type: 'partner', dailyLimit: this.currentSettings.limit, penaltyRate: this.currentSettings.rate });
+                await updateDoc(this.userRef, { groupId: nG.id }); await updateDoc(doc(db, "users", fD.id), { groupId: nG.id });
+                location.reload();
+            },
+            async updateSettings() {
+                const l = parseInt(document.getElementById('setLimit').value), r = parseFloat(document.getElementById('setRate').value);
+                if (this.currentUser.groupId) await updateDoc(doc(db, "groups", this.currentUser.groupId), { dailyLimit: l, penaltyRate: r });
+                else await updateDoc(this.userRef, { dailyLimit: l, penaltyRate: r });
+                alert("Güncellendi!");
+            },
+            async disconnect() { if(confirm("Kopsun mu?")) { await updateDoc(this.userRef, { groupId: null, friends: [] }); location.reload(); } },
+            logout() { location.reload(); }, closeModal() { document.getElementById('connectionModal').style.display = 'none'; },
+            async addFriend() {
+                const f = document.getElementById('addFriendInput').value.trim(); if(!f) return;
+                const name = f.charAt(0).toUpperCase() + f.slice(1).toLowerCase();
+                const snap = await getDocs(query(collection(db, "users"), where("username", "==", name)));
+                if(snap.empty) return alert("Bulunamadı.");
+                const newList = [...(this.currentUser.friends || []), name];
+                await updateDoc(this.userRef, { friends: newList }); this.currentUser.friends = newList; this.loadFriends();
+            }
         };
-
         window.app = app;
     </script>
 </body>
