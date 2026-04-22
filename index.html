@@ -4,92 +4,136 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Miyav Yatırım</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fce4ec; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .app-container { background-color: #ffffff; width: 350px; border-radius: 35px; box-shadow: 0 15px 30px rgba(0,0,0,0.15); overflow: hidden; text-align: center; position: relative; height: 600px; display: flex; flex-direction: column;}
-        .header { background: linear-gradient(135deg, #e1bee7, #f8bbd0); padding: 20px; color: #4a148c; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; flex-shrink: 0;}
+        body { font-family: 'Poppins', sans-serif; background: #f2f2f7; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; color: #1d1d1f; }
         
-        .content-area { flex-grow: 1; overflow-y: auto; padding-bottom: 70px; /* Menü için boşluk */ }
+        /* Modern Telefon Çerçevesi */
+        .app-container { width: 100%; max-width: 400px; height: 100vh; background: #ffffff; position: relative; display: flex; flex-direction: column; overflow: hidden; }
+        @media (min-width: 400px) { .app-container { height: 90vh; max-height: 850px; border-radius: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.1); border: 8px solid #ffffff; } }
         
-        .cat-icon { font-size: 70px; margin: 15px 0; animation: float 3s infinite ease-in-out; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-        
-        .input-box { margin: 15px; padding: 12px; font-size: 18px; width: 70%; border: 2px solid #e1bee7; border-radius: 12px; text-align: center; outline: none; transition: 0.3s;}
-        .input-box:focus { border-color: #ba68c8; }
-        
-        .action-btn { background: #d81b60; color: white; border: none; padding: 12px 25px; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(216, 27, 96, 0.3); transition: 0.2s; margin-top: 10px; width: 80%;}
-        .action-btn:active { transform: scale(0.95); }
-        .total-penalty { font-size: 26px; color: #d81b60; font-weight: bold; margin-top: 10px;}
-        
-        /* Ekran Geçişleri */
-        .screen { display: none; padding: 10px 20px; }
-        .active-screen { display: block; animation: fadeIn 0.3s; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
-        
-        /* Geçmiş Listesi */
-        .history-item { background: #f3e5f5; border-radius: 10px; padding: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; text-align: left; border-left: 5px solid #ab47bc;}
-        .history-item.penalty { border-left-color: #d81b60; background: #fce4ec; }
-        .history-list { margin-top: 15px; padding-right: 5px;}
+        .header { padding: 25px 20px 15px; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); text-align: center; border-bottom: 1px solid rgba(0,0,0,0.05); z-index: 5;}
+        .header h2 { margin: 0; font-size: 20px; color: #1d1d1f; font-weight: 700; letter-spacing: -0.5px;}
 
-        /* YENİ: Alt Menü (Bottom Navigation) */
-        .bottom-nav { position: absolute; bottom: 0; width: 100%; background: #ffffff; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #eeeeee; border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); display: none; z-index: 10;}
-        .nav-item { color: #9e9e9e; font-size: 12px; cursor: pointer; transition: 0.3s; padding: 5px 15px; border-radius: 15px;}
-        .nav-item i { font-size: 20px; display: block; margin-bottom: 2px; font-style: normal;}
-        .nav-item.active { color: #d81b60; font-weight: bold; background: #fce4ec;}
+        .content-area { flex: 1; overflow-y: auto; padding: 25px 20px 100px; background: #fbfbfd; }
+        
+        .screen { display: none; animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .active-screen { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        .cat-icon { font-size: 70px; text-align: center; margin-bottom: 15px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1)); }
+        h3 { text-align: center; font-size: 24px; font-weight: 600; margin-bottom: 5px; color: #1d1d1f; }
+        .subtitle { text-align: center; color: #86868b; font-size: 14px; margin-bottom: 30px; }
+
+        /* Modern Inputlar */
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-size: 13px; color: #86868b; margin-bottom: 8px; font-weight: 500; margin-left: 5px;}
+        .modern-input { width: 100%; box-sizing: border-box; padding: 18px 20px; border: 2px solid #e5e5ea; border-radius: 20px; background: #ffffff; font-size: 16px; font-family: 'Poppins', sans-serif; transition: all 0.3s ease; color: #1d1d1f; box-shadow: 0 4px 10px rgba(0,0,0,0.02);}
+        .modern-input:focus { background: #ffffff; border-color: #ff2d55; outline: none; box-shadow: 0 0 0 4px rgba(255, 45, 85, 0.1); }
+        .pin-input { text-align: center; letter-spacing: 15px; font-size: 24px; font-weight: 700; }
+
+        /* Modern Butonlar */
+        .modern-btn { width: 100%; padding: 18px; border: none; border-radius: 20px; background: linear-gradient(135deg, #ff2d55, #ff3b30); color: white; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: 'Poppins', sans-serif; box-shadow: 0 10px 20px rgba(255, 45, 85, 0.3); }
+        .modern-btn:active { transform: scale(0.96); box-shadow: 0 5px 10px rgba(255, 45, 85, 0.2); }
+        .modern-btn.secondary { background: #ffffff; color: #1d1d1f; border: 2px solid #e5e5ea; box-shadow: none; margin-top: 15px; }
+        
+        .error-text { color: #ff3b30; font-size: 13px; margin-top: -10px; margin-bottom: 20px; display: none; text-align: center; font-weight: 500; background: #ffe5e5; padding: 10px; border-radius: 10px;}
+
+        /* Modern Geçmiş Kartları */
+        .history-card { background: #ffffff; border-radius: 20px; padding: 18px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.02); }
+        .history-card .date { font-size: 13px; color: #86868b; margin-bottom: 4px;}
+        .history-card .mins { font-size: 16px; font-weight: 600; color: #1d1d1f;}
+        .history-card .price { font-size: 18px; font-weight: 700; }
+        .history-card.penalty .price { color: #ff3b30; }
+        .history-card.success .price { color: #34c759; }
+
+        .total-penalty { font-size: 36px; color: #ff3b30; font-weight: 700; margin: 20px 0; text-align: center;}
+
+        /* Modern Alt Menü */
+        .bottom-nav { position: absolute; bottom: 0; width: 100%; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); display: none; justify-content: space-around; padding: 15px 0 25px; border-top: 1px solid rgba(0,0,0,0.05); z-index: 10; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #86868b; font-size: 11px; font-weight: 500; cursor: pointer; transition: 0.3s; width: 33%;}
+        .nav-item i { font-size: 24px; margin-bottom: 6px; font-style: normal; opacity: 0.5; transition: 0.3s; filter: grayscale(100%);}
+        .nav-item.active { color: #ff2d55; font-weight: 600;}
+        .nav-item.active i { opacity: 1; filter: grayscale(0%); transform: translateY(-2px); }
     </style>
 </head>
 <body>
 
     <div class="app-container">
         <div class="header">
-            <h2 style="margin:0;">🥣 Ortak Mama Kabı</h2>
+            <h2>🥣 Miyav Yatırım</h2>
         </div>
 
         <div class="content-area">
             <div id="loginScreen" class="screen active-screen">
-                <div class="cat-icon" style="font-size: 80px;">🐈</div>
-                <h3 style="color: #7b1fa2;">Hoş Geldin!</h3>
-                <p style="color: #666; font-size: 14px;">Lütfen ismini gir:</p>
-                <input type="text" id="loginUsername" class="input-box" placeholder="İsminiz">
-                <br>
-                <button class="action-btn" onclick="login()">Giriş Yap 🐾</button>
+                <div class="cat-icon">🔐</div>
+                <h3>Giriş Yap</h3>
+                <p class="subtitle">İsmini ve 4 haneli şifreni gir.</p>
+                
+                <div id="loginError" class="error-text"></div>
+
+                <div class="input-group">
+                    <label>Kullanıcı Adı</label>
+                    <input type="text" id="loginUsername" class="modern-input" placeholder="Örn: Tufan">
+                </div>
+                
+                <div class="input-group">
+                    <label>PIN (4 Rakam)</label>
+                    <input type="password" id="loginPin" class="modern-input pin-input" maxlength="4" placeholder="••••" inputmode="numeric">
+                </div>
+                
+                <button class="modern-btn" id="loginBtn" onclick="login()">Sisteme Gir</button>
             </div>
 
             <div id="dashboardScreen" class="screen">
-                <div class="cat-icon">🐱</div>
-                <h3 id="welcomeMessage" style="color: #7b1fa2; margin-top: 0;"></h3>
-                <p style="color: #666; font-weight: bold;">Bugünkü Ekran Süren (Dakika)</p>
-                <input type="number" id="minutesInput" class="input-box" placeholder="Örn: 210">
-                <br>
-                <button class="action-btn" id="submitBtn" onclick="sendData()">Süremi Gir 🐾</button>
+                <div class="cat-icon">⏱️</div>
+                <h3 id="welcomeMessage"></h3>
+                <p class="subtitle">Bugün telefona ne kadar baktın?</p>
+                
+                <div class="input-group">
+                    <label>Ekran Süresi (Dakika)</label>
+                    <input type="number" id="minutesInput" class="modern-input pin-input" placeholder="0" inputmode="numeric">
+                </div>
+                
+                <button class="modern-btn" id="submitBtn" onclick="sendData()">Süremi Kaydet</button>
             </div>
 
             <div id="historyScreen" class="screen">
-                <h3 style="color: #7b1fa2; margin-bottom: 5px;">📜 Son Kayıtların</h3>
-                <div class="history-list" id="historyListContainer">Kayıtlar yükleniyor...</div>
+                <h3>📜 Geçmiş</h3>
+                <p class="subtitle">Son girdiğin süreler ve cezalar.</p>
+                <div id="historyListContainer">Yükleniyor...</div>
             </div>
 
             <div id="profileScreen" class="screen">
-                <div class="cat-icon" style="font-size: 60px;">👤</div>
-                <h3 style="color: #7b1fa2;" id="profileName">Profil</h3>
-                <p style="color: #666;">Günlük Limit: <strong>180 Dakika</strong></p>
-                <p style="color: #666;">Ceza Çarpanı: <strong>1.0 ₺</strong></p>
-                <button class="action-btn" style="background: #9e9e9e; margin-top: 30px;" onclick="logout()">Çıkış Yap</button>
+                <div class="cat-icon">👤</div>
+                <h3 id="profileName">Profil</h3>
+                <p class="subtitle">Hesap Detayları</p>
+                
+                <div class="history-card">
+                    <span class="mins">Günlük Limit</span>
+                    <span class="price" style="color: #1d1d1f;">180 Dk</span>
+                </div>
+                <div class="history-card">
+                    <span class="mins">Ceza Çarpanı</span>
+                    <span class="price" style="color: #1d1d1f;">1.0 ₺ / Dk</span>
+                </div>
+
+                <button class="modern-btn secondary" onclick="logout()">Güvenli Çıkış Yap</button>
             </div>
 
             <div id="receiptScreen" class="screen">
-                <div class="cat-icon" style="font-size: 60px; animation: none;">😾</div>
-                <h3 style="color: #e65100; margin: 0;">Miyav! Limit Aşıldı!</h3>
-                <p style="color: #666;">Aşılan süreye göre cezan:</p>
-                <div class="total-penalty" id="penaltyAmount">₺ 0.00</div>
-                <button class="action-btn" style="background: #4caf50; margin-top: 20px;" onclick="switchTab('dashboardScreen', 'nav-home')">Ödedim, Onayla 🐾</button>
+                <div class="cat-icon">💸</div>
+                <h3 style="color: #ff3b30;">Limit Aşıldı!</h3>
+                <p class="subtitle">Aşılan süreye göre faturan kesildi.</p>
+                <div class="total-penalty" id="penaltyAmount">₺0.00</div>
+                <button class="modern-btn" onclick="switchTab('dashboardScreen', 'nav-home')">Ödedim, Onayla</button>
             </div>
             
             <div id="successScreen" class="screen">
-                <div class="cat-icon">😻</div>
-                <h3 style="color: #4caf50;">Harika! Limit Aşılmadı.</h3>
-                <p style="color: #7b1fa2;">Bugün çok usluyuz!</p>
-                <button class="action-btn" onclick="switchTab('dashboardScreen', 'nav-home')">Geri Dön</button>
+                <div class="cat-icon">✨</div>
+                <h3 style="color: #34c759;">Harika!</h3>
+                <p class="subtitle">Bugün limiti aşmadın, ceza yok.</p>
+                <button class="modern-btn" onclick="switchTab('dashboardScreen', 'nav-home')">Ana Ekrana Dön</button>
             </div>
         </div>
 
@@ -98,7 +142,7 @@
                 <i>🏠</i> Ana Sayfa
             </div>
             <div class="nav-item" id="nav-history" onclick="openHistoryTab()">
-                <i>📜</i> Geçmiş
+                <i>📊</i> Geçmiş
             </div>
             <div class="nav-item" id="nav-profile" onclick="switchTab('profileScreen', 'nav-profile')">
                 <i>⚙️</i> Profil
@@ -127,34 +171,81 @@
         const DAILY_LIMIT = 180; 
         const PENALTY_RATE = 1.0; 
 
-        // Menü sekmeleri arası geçiş
         window.switchTab = function(screenId, navId) {
-            // Tüm ekranları gizle
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
-            // İstenen ekranı göster
             document.getElementById(screenId).classList.add('active-screen');
 
-            // Menü renklerini ayarla
             if(navId) {
                 document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
                 document.getElementById(navId).classList.add('active');
             }
         };
 
-        window.login = function() {
+        // YENİ: ŞİFRELİ GİRİŞ SİSTEMİ
+        window.login = async function() {
             const username = document.getElementById('loginUsername').value.trim();
-            if(!username) return alert("Lütfen adını yaz!");
-            
-            loggedInUser = username.charAt(0).toUpperCase() + username.slice(1).toLowerCase();
-            document.getElementById('welcomeMessage').innerText = `Merhaba, ${loggedInUser}!`;
+            const pin = document.getElementById('loginPin').value.trim();
+            const errorText = document.getElementById('loginError');
+
+            // Hata Kontrolleri
+            if(!username) { showError("Lütfen ismini gir."); return; }
+            if(pin.length !== 4 || isNaN(pin)) { showError("Şifre 4 haneli bir rakam olmalıdır."); return; }
+
+            const capitalizedUser = username.charAt(0).toUpperCase() + username.slice(1).toLowerCase();
+            const btn = document.getElementById('loginBtn');
+            btn.innerText = "Bağlanıyor...";
+            btn.disabled = true;
+            errorText.style.display = "none";
+
+            try {
+                // Veritabanında Kullanıcı Ara
+                const q = query(collection(db, "users"), where("username", "==", capitalizedUser));
+                const querySnapshot = await getDocs(q);
+
+                if (querySnapshot.empty) {
+                    // Kullanıcı yoksa, yeni kayıt oluştur
+                    await addDoc(collection(db, "users"), { username: capitalizedUser, pin: pin });
+                    finalizeLogin(capitalizedUser);
+                } else {
+                    // Kullanıcı varsa, şifreyi doğrula
+                    let correctPin = "";
+                    querySnapshot.forEach((doc) => { correctPin = doc.data().pin; });
+                    
+                    if (pin === correctPin) {
+                        finalizeLogin(capitalizedUser);
+                    } else {
+                        showError("Hatalı şifre! Lütfen tekrar dene.");
+                        btn.innerText = "Sisteme Gir";
+                        btn.disabled = false;
+                    }
+                }
+            } catch (error) {
+                showError("Bağlantı hatası oluştu.");
+                btn.innerText = "Sisteme Gir";
+                btn.disabled = false;
+            }
+        };
+
+        function showError(msg) {
+            const errorText = document.getElementById('loginError');
+            errorText.innerText = msg;
+            errorText.style.display = "block";
+        }
+
+        function finalizeLogin(user) {
+            loggedInUser = user;
+            document.getElementById('welcomeMessage').innerText = `Merhaba, ${loggedInUser} 👋`;
             document.getElementById('profileName').innerText = loggedInUser;
+            document.getElementById('loginPin').value = ""; 
             document.getElementById('minutesInput').value = ""; 
             
-            // Alt menüyü görünür yap
             document.getElementById('bottomNav').style.display = 'flex';
-            
+            const btn = document.getElementById('loginBtn');
+            btn.innerText = "Sisteme Gir";
+            btn.disabled = false;
+
             window.switchTab('dashboardScreen', 'nav-home');
-        };
+        }
 
         window.logout = function() {
             loggedInUser = null;
@@ -165,12 +256,12 @@
 
         window.openHistoryTab = function() {
             window.switchTab('historyScreen', 'nav-history');
-            fetchHistory(); // Tab açılırken verileri otomatik çek
+            fetchHistory(); 
         };
 
         window.sendData = async function() {
             const minutes = parseInt(document.getElementById('minutesInput').value);
-            if(!minutes) return alert("Lütfen bir süre girin!");
+            if(!minutes || minutes < 0) return alert("Geçerli bir süre girin!");
 
             const btn = document.getElementById('submitBtn');
             btn.innerText = "Kaydediliyor...";
@@ -186,20 +277,20 @@
                     username: loggedInUser,
                     minutesUsed: minutes,
                     calculatedPenalty: penalty,
-                    entryDate: new Date().toLocaleDateString('tr-TR'),
+                    entryDate: new Date().toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute:'2-digit' }),
                     timestamp: Date.now()
                 });
 
                 if (penalty > 0) {
-                    document.getElementById('penaltyAmount').innerText = "₺ " + penalty.toFixed(2);
-                    window.switchTab('receiptScreen', null); // Fiş ekranında menü aktif görünmesin
+                    document.getElementById('penaltyAmount').innerText = "₺" + penalty.toFixed(2);
+                    window.switchTab('receiptScreen', null); 
                 } else {
                     window.switchTab('successScreen', null);
                 }
             } catch (error) {
-                alert("Bağlantı hatası: " + error.message);
+                alert("Bağlantı hatası.");
             } finally {
-                btn.innerText = "Süremi Gir 🐾";
+                btn.innerText = "Süremi Kaydet";
                 btn.disabled = false;
                 document.getElementById('minutesInput').value = ""; 
             }
@@ -207,33 +298,31 @@
 
         window.fetchHistory = async function() {
             const container = document.getElementById('historyListContainer');
-            container.innerHTML = "Yükleniyor...";
+            container.innerHTML = "<p style='text-align:center; color:#86868b;'>Kayıtlar yükleniyor...</p>";
 
             try {
                 const q = query(collection(db, "logs"), where("username", "==", loggedInUser));
                 const querySnapshot = await getDocs(q);
                 
                 let historyData = [];
-                querySnapshot.forEach((doc) => {
-                    historyData.push(doc.data());
-                });
+                querySnapshot.forEach((doc) => { historyData.push(doc.data()); });
 
                 historyData.sort((a, b) => b.timestamp - a.timestamp);
-                historyData = historyData.slice(0, 10); 
+                historyData = historyData.slice(0, 15); 
 
                 container.innerHTML = "";
                 if(historyData.length === 0) {
-                    container.innerHTML = "<p style='color:#999; margin-top:20px;'>Henüz hiç kayıt yok.</p>";
+                    container.innerHTML = "<p style='text-align:center; color:#86868b; margin-top:20px;'>Henüz kayıt yok.</p>";
                 } else {
                     historyData.forEach(item => {
                         const isPenalty = item.calculatedPenalty > 0;
                         container.innerHTML += `
-                            <div class="history-item ${isPenalty ? 'penalty' : ''}">
+                            <div class="history-card ${isPenalty ? 'penalty' : 'success'}">
                                 <div>
-                                    <strong>${item.entryDate}</strong><br>
-                                    <span style="color:#666">${item.minutesUsed} Dk</span>
+                                    <div class="date">${item.entryDate}</div>
+                                    <div class="mins">⏱️ ${item.minutesUsed} Dk</div>
                                 </div>
-                                <div style="font-weight:bold; color: ${isPenalty ? '#d81b60' : '#4caf50'}">
+                                <div class="price">
                                     ${isPenalty ? '₺' + item.calculatedPenalty.toFixed(2) : 'Ceza Yok'}
                                 </div>
                             </div>
@@ -241,7 +330,7 @@
                     });
                 }
             } catch (error) {
-                container.innerHTML = "Geçmiş yüklenirken hata oluştu.";
+                container.innerHTML = "<p style='color:#ff3b30; text-align:center;'>Geçmiş yüklenirken hata oluştu.</p>";
             }
         };
     </script>
