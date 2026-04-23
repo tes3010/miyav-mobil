@@ -21,7 +21,6 @@
         .active-screen { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Kedi Maskotu - Y ekseni düzeltildi */
         #petMascot { position: absolute; bottom: 150px; right: 20px; font-size: 45px; cursor: pointer; z-index: 1000; animation: kittyDance 1.5s infinite alternate ease-in-out; display: none; }
         @keyframes kittyDance { from { transform: scale(1) rotate(-5deg); } to { transform: scale(1.1) rotate(5deg); } }
 
@@ -31,6 +30,10 @@
         .pot-item { flex: 1; }
         .pot-item div:first-child { font-size: 10px; font-weight: 700; opacity: 0.7; }
         
+        .level-badge { background: var(--dark-lilac); color: white; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: 700; display: inline-block; margin-bottom: 10px; }
+        .xp-bar-bg { background: #eee; height: 12px; border-radius: 10px; margin: 15px 0; overflow: hidden; position: relative; }
+        .xp-bar-fill { background: var(--accent-green); height: 100%; width: 0%; transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
         .bottom-nav { position: absolute; bottom: 0; width: 100%; background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(25px); display: none; justify-content: space-around; padding: 15px 0 35px; border-top: 1px solid rgba(0,0,0,0.05); z-index: 99; }
         .nav-link { display: flex; flex-direction: column; align-items: center; color: #aaa; font-size: 10px; font-weight: 600; cursor: pointer; flex: 1; transition: 0.2s; }
         .nav-link.active { color: var(--dark-lilac); }
@@ -40,11 +43,8 @@
         .modern-input { width: 100%; box-sizing: border-box; padding: 16px; border: 2px solid #efeff4; border-radius: 18px; background: #f5f5f7; font-size: 16px; margin-bottom: 15px; font-family: inherit; }
         
         .list-item { background: white; border-radius: 20px; padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(0,0,0,0.02); }
-        .friend-item { cursor: pointer; transition: 0.2s; }
-        .friend-item:active { transform: scale(0.98); background: #fafafa; }
         .payment-btn { border: none; border-radius: 12px; padding: 8px 14px; color: white; font-size: 11px; font-weight: 700; cursor: pointer; }
-        .btn-unpaid { background: var(--accent-red); } 
-        .btn-paid { background: var(--accent-green); }
+        .btn-unpaid { background: var(--accent-red); } .btn-paid { background: var(--accent-green); }
     </style>
 </head>
 <body>
@@ -77,7 +77,7 @@
                 </div>
                 <input type="date" id="screenTimeDate" class="modern-input">
                 <input type="number" id="screenTimeInput" class="modern-input" placeholder="Kaç dakika?">
-                <button class="primary-btn" onclick="app.saveLog()">Kaydet ve Mama Kazan 🦴</button>
+                <button class="primary-btn" onclick="app.saveLog()">Süreyi Kaydet 🦴</button>
             </div>
 
             <div id="paymentsScreen" class="screen">
@@ -88,27 +88,14 @@
 
             <div id="friendsScreen" class="screen">
                 <h3>🐕 Dostlar</h3>
-                <div style="display:flex; gap:8px; margin-bottom:20px;"><input type="text" id="addFriendInput" class="modern-input" style="margin:0;"><button class="primary-btn" onclick="app.addFriend()" style="width:auto; padding:15px;">Ekle</button></div>
                 <div id="friendsList"></div>
             </div>
 
-            <div id="friendProfileScreen" class="screen">
-                <button class="primary-btn" onclick="app.switchTab('friendsScreen')" style="width:auto; padding:10px 20px; background:#eee; color:#333; margin-bottom:15px; border-radius: 12px; border:none;">⬅ Geri</button>
-                <h3 id="fpName" style="text-align:center;">Partner</h3>
-                <div class="total-pot-card" style="background:white; border:2px solid red; color:red; box-shadow:none;"><div class="label" style="color:black; font-size:12px;">Ödenmemiş Borcu</div><div class="amount" id="fpTotal">₺0.00</div></div>
-                <h4>📜 Kayıt Geçmişi</h4>
-                <div id="fpHistoryList"></div>
-            </div>
-
             <div id="myProfileScreen" class="screen">
-                <h3>👤 Ayarlar & Profil</h3>
-                <div class="input-group">
-                    <label style="font-size:12px; font-weight:600;">Günlük Limit (Dk)</label><input type="number" id="setLimit" class="modern-input">
-                    <label style="font-size:12px; font-weight:600;">Ceza (1 Dk / ₺)</label><input type="number" step="0.1" id="setRate" class="modern-input">
-                </div>
+                <h3>👤 Profil & Ayarlar</h3>
                 <button class="primary-btn" onclick="app.updateSettings()">Ayarları Kaydet</button>
-                <div style="margin-top:20px;">
-                    <h4>📜 Senin Kayıtların</h4>
+                <div style="margin-top:25px; padding-top:15px; border-top: 2px dashed #eee;">
+                    <h4>📜 Kayıt Geçmişi</h4>
                     <div id="detailedLogHistory"></div>
                 </div>
                 <button class="primary-btn" onclick="app.logout()" style="background:#888; margin-top:30px;">Çıkış Yap</button>
@@ -117,10 +104,20 @@
             <div id="gameScreen" class="screen">
                 <button class="primary-btn" onclick="app.switchTab('homeScreen')" style="background:#eee; color:#333; margin-bottom:20px; border:none; border-radius:15px;">⬅ Geri</button>
                 <div style="text-align: center; background: white; border-radius: 30px; padding: 30px 20px; border: 2px solid var(--main-lilac);">
-                    <div id="petAvatar" style="font-size: 80px; margin-bottom: 20px;">🐱</div>
-                    <div style="font-size: 20px; font-weight: 800;">🦴 <span id="currentMamas">58</span> Mama</div>
-                    <button class="primary-btn" onclick="app.feedPet()" style="background: var(--accent-green); margin-top:20px;">Besle (-10 Puan)</button>
+                    <div id="petLevelBadge" class="level-badge">Seviye 1: Bebek</div>
+                    <div id="petAvatar" style="font-size: 80px; margin-bottom: 10px;">🐣</div>
+                    <div class="xp-bar-bg"><div id="xpBarFill" class="xp-bar-fill"></div></div>
+                    <div style="font-size: 20px; font-weight: 800; color: var(--dark-lilac);">🦴 <span id="currentMamas">58</span> Mama</div>
+                    <button class="primary-btn" onclick="app.feedPet()" style="background: var(--accent-green); margin-top:20px;">Besle (-10 Puan) 🐟</button>
                 </div>
+            </div>
+
+            <div id="friendProfileScreen" class="screen">
+                <button class="primary-btn" onclick="app.switchTab('friendsScreen')" style="width:auto; padding:10px 20px; background:#eee; color:#333; margin-bottom:15px; border-radius: 12px; border:none;">⬅ Geri</button>
+                <h3 id="fpName" style="text-align:center;">Partner</h3>
+                <div class="total-pot-card" style="background:white; border:2px solid red; color:red; box-shadow:none;"><div class="label" style="color:black; font-size:12px;">Ödenmemiş Borcu</div><div class="amount" id="fpTotal">₺0.00</div></div>
+                <h4>📜 Kayıt Geçmişi</h4>
+                <div id="fpHistoryList"></div>
             </div>
         </div>
 
@@ -146,8 +143,8 @@
                 const name = u.charAt(0).toUpperCase() + u.slice(1).toLowerCase();
                 const snap = await getDocs(query(collection(db, "users"), where("username", "==", name)));
                 if(snap.empty) {
-                    const nD = await addDoc(collection(db, "users"), { username: name, pin: p, dailyLimit: 180, penaltyRate: 1.0, friends: [], groupId: null, petMamas: 58 });
-                    this.setupUser({id: nD.id, username: name, dailyLimit: 180, penaltyRate: 1.0, petMamas: 58});
+                    const nD = await addDoc(collection(db, "users"), { username: name, pin: p, dailyLimit: 180, penaltyRate: 1.0, friends: [], groupId: null, petMamas: 58, petLevel: 1, petXP: 0 });
+                    this.setupUser({id: nD.id, username: name, dailyLimit: 180, penaltyRate: 1.0, petMamas: 58, petLevel: 1, petXP: 0});
                 } else {
                     const uD = snap.docs[0].data();
                     if(uD.pin === p) this.setupUser({id: snap.docs[0].id, ...uD});
@@ -168,15 +165,19 @@
                     if(!d.exists()) return;
                     const data = d.data();
                     const mamas = data.petMamas !== undefined ? data.petMamas : 58;
+                    const level = data.petLevel || 1, xp = data.petXP || 0;
                     document.getElementById('currentMamas').innerText = mamas;
                     document.getElementById('mamaPointsDisplay').innerText = mamas;
-                    this.currentMamas = mamas;
+                    document.getElementById('xpBarFill').style.width = (xp / (level * 100)) * 100 + "%";
+                    this.currentMamas = mamas; this.currentLevel = level; this.currentXP = xp;
                 });
             },
             async feedPet() {
                 if(this.currentMamas < 10) return alert("Yetersiz mama!");
+                let newXP = this.currentXP + 10, newLevel = this.currentLevel;
+                if(newXP >= (this.currentLevel * 100)) { newLevel++; newXP = 0; }
                 const tRef = this.currentUser.groupId ? doc(db, "groups", this.currentUser.groupId) : this.userRef;
-                await updateDoc(tRef, { petMamas: this.currentMamas - 10 });
+                await updateDoc(tRef, { petXP: newXP, petLevel: newLevel, petMamas: this.currentMamas - 10 });
             },
             async saveLog() {
                 const dV = document.getElementById('screenTimeDate').value, mins = parseInt(document.getElementById('screenTimeInput').value);
@@ -225,11 +226,10 @@
             listenToSettings() {
                 if(this.currentUser.groupId) {
                     onSnapshot(doc(db, "groups", this.currentUser.groupId), (d) => {
-                        if(d.exists()) { const gd = d.data(); this.currentSettings = { limit: gd.dailyLimit, rate: gd.penaltyRate }; this.updateUI(); }
+                        if(d.exists()) { const gd = d.data(); this.currentSettings = { limit: gd.dailyLimit, rate: gd.penaltyRate }; }
                     });
-                } else { this.updateUI(); }
+                }
             },
-            updateUI() { document.getElementById('setLimit').value = this.currentSettings.limit; document.getElementById('setRate').value = this.currentSettings.rate; },
             async loadPayments() {
                 const list = document.getElementById('paymentsListContainer');
                 const q = this.currentUser.groupId ? query(collection(db, "logs"), where("groupId", "==", this.currentUser.groupId)) : query(collection(db, "logs"), where("userId", "==", this.currentUser.id));
@@ -238,28 +238,15 @@
                 logs.forEach(d => { if(d.penalty > 0) list.innerHTML += `<div class="list-item"><div>${d.username}<br><small>${d.date}</small></div><div style="display:flex; align-items:center; gap:10px;">₺${d.penalty.toFixed(2)} <button class="payment-btn ${d.cleared ? 'btn-paid':'btn-unpaid'}" onclick="app.togglePayment('${d.id}', ${d.cleared})">${d.cleared ? 'Ödendi':'Ödenmedi'}</button></div></div>`; });
             },
             async togglePayment(id, s) { await updateDoc(doc(db, "logs", id), { cleared: !s }); this.loadPayments(); },
-            async updateSettings() {
-                const l = parseInt(document.getElementById('setLimit').value), r = parseFloat(document.getElementById('setRate').value);
-                const tRef = this.currentUser.groupId ? doc(db, "groups", this.currentUser.groupId) : this.userRef;
-                await updateDoc(tRef, { dailyLimit: l, penaltyRate: r }); alert("Güncellendi!");
-            },
-            async addFriend() {
-                const f = document.getElementById('addFriendInput').value.trim(); if(!f) return;
-                const name = f.charAt(0).toUpperCase() + f.slice(1).toLowerCase();
-                const snap = await getDocs(query(collection(db, "users"), where("username", "==", name)));
-                if(snap.empty) return alert("Bulunamadı.");
-                const newList = [...(this.currentUser.friends || []), name];
-                await updateDoc(this.userRef, { friends: newList }); this.currentUser.friends = newList; this.loadFriends();
-            },
             async loadFriends() {
-                const list = document.getElementById('friendsList'); if(!this.currentUser.friends?.length) { list.innerHTML = "Dost listesi boş."; return; }
+                const list = document.getElementById('friendsList'); if(!this.currentUser.friends?.length) { list.innerHTML = "Boş."; return; }
                 const snap = await getDocs(query(collection(db, "users"), where("username", "in", this.currentUser.friends)));
                 list.innerHTML = ""; snap.forEach(d => {
-                    const u = d.data(); const isConn = u.groupId && u.groupId === this.currentUser.groupId;
-                    list.innerHTML += `<div class="list-item friend-item" onclick="app.handleFriendClick('${u.username}', ${isConn})"><div>${u.username} ${isConn ? '💖':''}</div><div style="color:var(--dark-lilac); font-size:12px;">${isConn ? 'Bağlı':'Tıkla'}</div></div>`;
+                    const u = d.data(); const isConn = u.groupId === this.currentUser.groupId;
+                    list.innerHTML += `<div class="list-item" onclick="app.handleFriendClick('${u.username}', ${isConn})"><div>${u.username} ${isConn ? '💖':''}</div><div style="color:var(--dark-lilac); font-size:12px;">${isConn ? 'Bağlı':'Tıkla'}</div></div>`;
                 });
             },
-            async handleFriendClick(n, c) { if(c) this.openFriendProfile(n); else { if(confirm(`${n} ile partner ol?`)) { const snap = await getDocs(query(collection(db, "users"), where("username", "==", n))); const nG = await addDoc(collection(db, "groups"), { dailyLimit: 180, penaltyRate: 1.0, petMamas: 58 }); await updateDoc(this.userRef, { groupId: nG.id }); await updateDoc(doc(db, "users", snap.docs[0].id), { groupId: nG.id }); location.reload(); } } },
+            handleFriendClick(n, c) { if(c) this.openFriendProfile(n); },
             async openFriendProfile(name) {
                 document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
                 document.getElementById('friendProfileScreen').classList.add('active-screen');
@@ -267,8 +254,8 @@
                 const snap = await getDocs(query(collection(db, "logs"), where("username", "==", name)));
                 let total = 0, logs = []; snap.forEach(d => { let data = d.data(); if(!data.cleared) total += data.penalty; logs.push(data); });
                 document.getElementById('fpTotal').innerText = `₺${total.toFixed(2)}`;
-                const list = document.getElementById('fpHistoryList'); list.innerHTML = "";
-                logs.sort((a,b) => b.timestamp - a.timestamp).slice(0,10).forEach(d => { list.innerHTML += `<div class="list-item"><div>${d.minutes} Dk<br><small>${d.date}</small></div><div style="color:${d.cleared ? '#888':'red'}">₺${d.penalty.toFixed(2)}</div></div>`; });
+                const hist = document.getElementById('fpHistoryList'); hist.innerHTML = "";
+                logs.sort((a,b) => b.timestamp - a.timestamp).slice(0,10).forEach(d => { hist.innerHTML += `<div class="list-item"><div>${d.minutes} Dk<br><small>${d.date}</small></div><div>₺${d.penalty.toFixed(2)}</div></div>`; });
             },
             logout() { location.reload(); }
         };
