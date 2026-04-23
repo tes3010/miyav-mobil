@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Miyav & Hav Yatırım</title>
+    <title>Miyav & Hav</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="apple-touch-icon" href="https://em-content.zobj.net/source/apple/354/paw-prints_1f43e.png">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/616/616408.png">
     
     <style>
         :root { --main-lilac: #e1bee7; --dark-lilac: #7b1fa2; --soft-pink: #fce4ec; --apple-gray: #f2f2f7; --accent-red: #ff2d55; --accent-green: #34c759; }
@@ -19,142 +19,117 @@
         .content-area { flex: 1; overflow-y: auto; padding: 20px 20px 100px; background: #fbfbfd; }
         .screen { display: none; animation: fadeIn 0.3s ease-out; }
         .active-screen { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Geri Butonu */
-        .back-nav { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; cursor: pointer; color: var(--dark-lilac); font-weight: 600; font-size: 14px; width: fit-content; padding: 5px 10px; border-radius: 12px; background: var(--soft-pink); transition: 0.2s; }
-        .back-nav:active { transform: scale(0.95); opacity: 0.8; }
+        /* Kedi Maskotu - Y ekseni düzeltildi */
+        #petMascot { position: absolute; bottom: 150px; right: 20px; font-size: 45px; cursor: pointer; z-index: 1000; animation: kittyDance 1.5s infinite alternate ease-in-out; display: none; }
+        @keyframes kittyDance { from { transform: scale(1) rotate(-5deg); } to { transform: scale(1.1) rotate(5deg); } }
 
-        #petMascot { position: absolute; bottom: 120px; right: 20px; font-size: 45px; cursor: pointer; z-index: 1000; animation: bounce 2s infinite ease-in-out; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1)); display: none; }
-        @keyframes bounce { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-10px) rotate(10deg); } }
-
-        .game-panel { text-align: center; background: linear-gradient(135deg, #fff, var(--soft-pink)); border-radius: 30px; padding: 30px 20px; border: 2px solid var(--main-lilac); }
-        .pet-avatar { font-size: 80px; margin: 20px 0; }
-        .level-badge { background: var(--dark-lilac); color: white; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: 700; }
-        .xp-bar-bg { background: #eee; height: 12px; border-radius: 10px; margin: 20px 0; overflow: hidden; }
-        .xp-bar-fill { background: var(--accent-green); height: 100%; width: 0%; transition: width 0.5s; }
-
-        .hub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
-        .hub-card { background: white; padding: 25px 15px; border-radius: 25px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.02); cursor: pointer; }
-        .hub-card span { font-size: 30px; display: block; margin-bottom: 8px; }
-
-        .total-pot-card { background: linear-gradient(135deg, var(--main-lilac), #f8bbd0); padding: 20px; border-radius: 25px; color: var(--dark-lilac); text-align: center; margin-bottom: 20px; }
+        .total-pot-card { background: linear-gradient(135deg, var(--main-lilac), #f8bbd0); padding: 20px; border-radius: 25px; color: var(--dark-lilac); text-align: center; margin-bottom: 20px; box-shadow: 0 8px 15px rgba(123, 31, 162, 0.1); }
         .amount { font-size: 32px; font-weight: 800; }
-        .primary-btn { width: 100%; padding: 16px; border: none; border-radius: 20px; background: var(--dark-lilac); color: white; font-size: 15px; font-weight: 600; cursor: pointer; }
-        .modern-input { width: 100%; box-sizing: border-box; padding: 15px; border: 2px solid #efeff4; border-radius: 15px; background: #f5f5f7; font-size: 15px; margin-bottom: 15px; font-family: inherit; }
-        .bottom-nav { position: absolute; bottom: 0; width: 100%; background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(25px); display: none; justify-content: space-around; padding: 15px 0 35px; border-top: 1px solid rgba(0,0,0,0.05); z-index: 99; }
-        .nav-link { display: flex; flex-direction: column; align-items: center; color: #999; font-size: 10px; font-weight: 600; cursor: pointer; flex: 1; }
+        .pot-split { display: flex; justify-content: space-between; margin-top: 15px; border-top: 1px solid rgba(123, 31, 162, 0.1); padding-top: 10px; }
+        .pot-item { flex: 1; }
+        .pot-item div:first-child { font-size: 10px; font-weight: 700; opacity: 0.7; }
+        
+        .bottom-nav { position: absolute; bottom: 0; width: 100%; background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(25px); display: none; justify-content: space-around; padding: 15px 0 35px; border-top: 1px solid rgba(0,0,0,0.05); z-index: 99; }
+        .nav-link { display: flex; flex-direction: column; align-items: center; color: #aaa; font-size: 10px; font-weight: 600; cursor: pointer; flex: 1; transition: 0.2s; }
         .nav-link.active { color: var(--dark-lilac); }
-        .list-item { background: white; border-radius: 15px; padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(0,0,0,0.02); }
-        .payment-btn { border: none; border-radius: 10px; padding: 6px 12px; color: white; font-size: 11px; font-weight: 700; cursor: pointer; }
-        .btn-unpaid { background: var(--accent-red); } .btn-paid { background: var(--accent-green); }
-        .modal-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(5px); z-index: 200; display: none; justify-content: center; align-items: center; }
-        .modal-content { background: white; width: 85%; padding: 25px; border-radius: 25px; text-align: center; }
+        .nav-link span { font-size: 22px; margin-bottom: 3px; }
+
+        .primary-btn { width: 100%; padding: 16px; border: none; border-radius: 20px; background: var(--dark-lilac); color: white; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .modern-input { width: 100%; box-sizing: border-box; padding: 16px; border: 2px solid #efeff4; border-radius: 18px; background: #f5f5f7; font-size: 16px; margin-bottom: 15px; font-family: inherit; }
+        
+        .list-item { background: white; border-radius: 20px; padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(0,0,0,0.02); }
+        .friend-item { cursor: pointer; transition: 0.2s; }
+        .friend-item:active { transform: scale(0.98); background: #fafafa; }
+        .payment-btn { border: none; border-radius: 12px; padding: 8px 14px; color: white; font-size: 11px; font-weight: 700; cursor: pointer; }
+        .btn-unpaid { background: var(--accent-red); } 
+        .btn-paid { background: var(--accent-green); }
     </style>
 </head>
 <body>
     <div class="app-container">
         <div class="header"><h2>🐾 Miyav & Hav</h2></div>
-        
         <div id="petMascot" onclick="app.switchTab('gameScreen')">🐱</div>
 
         <div class="content-area">
             <div id="loginScreen" class="screen active-screen">
-                <div style="text-align: center; margin: 40px 0;"><span style="font-size: 80px;">🐶</span><h3>Pati Dünyası</h3></div>
+                <div style="text-align: center; margin: 40px 0;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" width="80" style="margin-bottom: 15px;">
+                    <h3>Pati Girişi</h3>
+                </div>
                 <input type="text" id="loginUser" class="modern-input" placeholder="İsminiz">
-                <input type="password" id="loginPin" class="modern-input" maxlength="4" placeholder="PIN" inputmode="numeric">
-                <button class="primary-btn" onclick="app.login()">Giriş Yap 🐾</button>
+                <input type="password" id="loginPin" class="modern-input" maxlength="4" placeholder="4 Haneli PIN" inputmode="numeric">
+                <button class="primary-btn" onclick="app.login()">Giriş Yap</button>
             </div>
 
             <div id="homeScreen" class="screen">
                 <div class="total-pot-card">
-                    <div style="font-size: 11px; font-weight: 700; opacity: 0.8;">ORTAK ÖDENMEMİŞ</div>
+                    <div style="font-size: 11px; font-weight: 700; opacity: 0.8;">🚨 ÖDENMEMİŞ TOPLAM</div>
                     <div class="amount" id="totalUnpaidDisplay">₺0.00</div>
-                    <div id="connectionStatus" style="font-size:10px; font-weight:700;">Yükleniyor...</div>
+                    <div class="pot-split">
+                        <div class="pot-item"><div>ÖDENEN</div><div id="totalPaidDisplay" style="color:#2e7d32; font-weight:700;">₺0.00</div></div>
+                        <div class="pot-item"><div>BUGÜN</div><div id="todayPenaltyDisplay" style="font-weight:700;">₺0.00</div></div>
+                    </div>
                 </div>
-                <div style="margin-bottom:15px; background: #e8f5e9; padding: 12px; border-radius: 15px; font-size: 11px; font-weight: 700; color: #2e7d32; display: flex; justify-content: space-between;">
-                    <span>🦴 Mama Puanın:</span> <span id="mamaPointsDisplay">0</span>
+                <div style="margin-bottom:15px; background: #e8f5e9; padding: 15px; border-radius: 18px; font-size: 12px; font-weight: 700; color: #2e7d32; display: flex; justify-content: space-between; align-items: center;">
+                    <span>🦴 Ortak Mama:</span> <span id="mamaPointsDisplay" style="font-size: 16px;">58</span>
                 </div>
-                <div class="input-group">
-                    <input type="date" id="screenTimeDate" class="modern-input">
-                    <input type="number" id="screenTimeInput" class="modern-input" placeholder="Dakika">
-                </div>
-                <button class="primary-btn" onclick="app.saveLog()">Kaydet 🦴</button>
-            </div>
-
-            <div id="hubScreen" class="screen">
-                <h3>🚀 Portal</h3>
-                <div class="hub-grid">
-                    <div class="hub-card" onclick="app.switchTab('paymentsScreen')"><span>💳</span><div>Borçlar</div></div>
-                    <div class="hub-card" onclick="app.switchTab('friendsScreen')"><span>🐕</span><div>Dostlar</div></div>
-                    <div class="hub-card" onclick="app.switchTab('historyScreen')"><span>📊</span><div>Grafik</div></div>
-                    <div class="hub-card" onclick="app.switchTab('settingsScreen')"><span>⚙️</span><div>Ayarlar</div></div>
-                </div>
-            </div>
-
-            <div id="gameScreen" class="screen">
-                <div class="back-nav" onclick="app.switchTab('homeScreen')">⬅ Geri Dön</div>
-                <div class="game-panel">
-                    <span class="level-badge" id="petLevelBadge">Yükleniyor...</span>
-                    <div class="pet-avatar" id="petAvatar">🐱</div>
-                    <div class="xp-bar-bg"><div class="xp-bar-fill" id="xpBarFill"></div></div>
-                    <div style="font-size: 18px; font-weight: 700; margin: 10px 0;">🦴 <span id="currentMamas">0</span> Mama</div>
-                    <button class="primary-btn" onclick="app.feedPet()" style="background: var(--accent-green);">Besle (-10 Mama) 🐟</button>
-                </div>
+                <input type="date" id="screenTimeDate" class="modern-input">
+                <input type="number" id="screenTimeInput" class="modern-input" placeholder="Kaç dakika?">
+                <button class="primary-btn" onclick="app.saveLog()">Kaydet ve Mama Kazan 🦴</button>
             </div>
 
             <div id="paymentsScreen" class="screen">
-                <div class="back-nav" onclick="app.switchTab('hubScreen')">⬅ Portala Dön</div>
-                <h3>💳 Borç Takibi</h3>
+                <h3>💳 Borç Dağılımı</h3>
+                <div id="personalDebtSummary" style="background:white; padding:15px; border-radius:20px; margin-bottom:20px; font-weight:600; border:1px solid #eee;"></div>
                 <div id="paymentsListContainer"></div>
             </div>
 
             <div id="friendsScreen" class="screen">
-                <div class="back-nav" onclick="app.switchTab('hubScreen')">⬅ Portala Dön</div>
-                <h3>🐕 Pati Dostları</h3>
-                <div class="flex-row" style="display:flex; gap:8px; margin-bottom:15px;"><input type="text" id="addFriendInput" class="modern-input" style="margin:0;"><button class="primary-btn" onclick="app.addFriend()" style="width:auto; padding:15px;">Ekle</button></div>
+                <h3>🐕 Dostlar</h3>
+                <div style="display:flex; gap:8px; margin-bottom:20px;"><input type="text" id="addFriendInput" class="modern-input" style="margin:0;"><button class="primary-btn" onclick="app.addFriend()" style="width:auto; padding:15px;">Ekle</button></div>
                 <div id="friendsList"></div>
             </div>
 
             <div id="friendProfileScreen" class="screen">
-                <div class="back-nav" onclick="app.switchTab('friendsScreen')">⬅ Geri</div>
+                <button class="primary-btn" onclick="app.switchTab('friendsScreen')" style="width:auto; padding:10px 20px; background:#eee; color:#333; margin-bottom:15px; border-radius: 12px; border:none;">⬅ Geri</button>
                 <h3 id="fpName" style="text-align:center;">Partner</h3>
                 <div class="total-pot-card" style="background:white; border:2px solid red; color:red; box-shadow:none;"><div class="label" style="color:black; font-size:12px;">Ödenmemiş Borcu</div><div class="amount" id="fpTotal">₺0.00</div></div>
+                <h4>📜 Kayıt Geçmişi</h4>
                 <div id="fpHistoryList"></div>
             </div>
 
             <div id="myProfileScreen" class="screen">
-                <h3 style="text-align:center;">👤 Profilim</h3>
-                <div class="total-pot-card" style="background:white; border:2px solid var(--dark-lilac); color:var(--dark-lilac); box-shadow:none; text-align:center;">
-                    <div class="label" style="color:black; font-size:12px;">BORÇ DAĞILIMI</div><div id="personalDebtSummary" style="margin-top:10px; font-weight:600;"></div>
+                <h3>👤 Ayarlar & Profil</h3>
+                <div class="input-group">
+                    <label style="font-size:12px; font-weight:600;">Günlük Limit (Dk)</label><input type="number" id="setLimit" class="modern-input">
+                    <label style="font-size:12px; font-weight:600;">Ceza (1 Dk / ₺)</label><input type="number" step="0.1" id="setRate" class="modern-input">
                 </div>
-                <div id="historyList"></div>
+                <button class="primary-btn" onclick="app.updateSettings()">Ayarları Kaydet</button>
+                <div style="margin-top:20px;">
+                    <h4>📜 Senin Kayıtların</h4>
+                    <div id="detailedLogHistory"></div>
+                </div>
+                <button class="primary-btn" onclick="app.logout()" style="background:#888; margin-top:30px;">Çıkış Yap</button>
             </div>
 
-            <div id="historyScreen" class="screen">
-                <div class="back-nav" onclick="app.switchTab('hubScreen')">⬅ Portala Dön</div>
-                <h3>📊 Analiz</h3>
-                <div class="chart-container"><canvas id="penaltyChart" height="180"></canvas></div>
-            </div>
-
-            <div id="settingsScreen" class="screen">
-                <div class="back-nav" onclick="app.switchTab('hubScreen')">⬅ Portala Dön</div>
-                <h3>⚙️ Ayarlar</h3>
-                <input type="number" id="setLimit" class="modern-input" placeholder="Limit">
-                <input type="number" step="0.1" id="setRate" class="modern-input" placeholder="Çarpan">
-                <button class="primary-btn" onclick="app.updateSettings()">Güncelle</button>
-                <button class="primary-btn" onclick="app.disconnect()" style="background:red; margin-top:20px;">Bağlantıyı Kopar 💔</button>
-                <button class="primary-btn" onclick="app.logout()" style="background:#888; margin-top:10px;">Çıkış</button>
+            <div id="gameScreen" class="screen">
+                <button class="primary-btn" onclick="app.switchTab('homeScreen')" style="background:#eee; color:#333; margin-bottom:20px; border:none; border-radius:15px;">⬅ Geri</button>
+                <div style="text-align: center; background: white; border-radius: 30px; padding: 30px 20px; border: 2px solid var(--main-lilac);">
+                    <div id="petAvatar" style="font-size: 80px; margin-bottom: 20px;">🐱</div>
+                    <div style="font-size: 20px; font-weight: 800;">🦴 <span id="currentMamas">58</span> Mama</div>
+                    <button class="primary-btn" onclick="app.feedPet()" style="background: var(--accent-green); margin-top:20px;">Besle (-10 Puan)</button>
+                </div>
             </div>
         </div>
 
         <nav class="bottom-nav" id="bottomNav">
             <div class="nav-link active" onclick="app.switchTab('homeScreen', this)"><span>🏠</span>Ev</div>
-            <div class="nav-link" onclick="app.switchTab('hubScreen', this)"><span>🚀</span>Portal</div>
+            <div class="nav-link" onclick="app.switchTab('paymentsScreen', this)"><span>💳</span>Finans</div>
+            <div class="nav-link" onclick="app.switchTab('friendsScreen', this)"><span>🐕</span>Dostlar</div>
             <div class="nav-link" onclick="app.switchTab('myProfileScreen', this)"><span>👤</span>Profil</div>
         </nav>
-        
-        <div id="connectionModal" class="modal-overlay"><div class="modal-content"><h3>Bağlan</h3><button class="primary-btn" onclick="app.makeConnection()">💖 Partner Ol</button><button onclick="app.closeModal()" style="margin-top:10px; border:none; background:none;">İptal</button></div></div>
     </div>
 
     <script type="module">
@@ -164,15 +139,15 @@
         const fApp = initializeApp(firebaseConfig); const db = getFirestore(fApp);
         
         const app = {
-            currentUser: null, userRef: null, currentSettings: { limit: 180, rate: 1.0 }, petData: { level: 1, xp: 0, mamas: 0 },
+            currentUser: null, userRef: null, currentSettings: { limit: 180, rate: 1.0 },
             async login() {
                 const u = document.getElementById('loginUser').value.trim(), p = document.getElementById('loginPin').value.trim();
                 if(!u || p.length !== 4) return;
                 const name = u.charAt(0).toUpperCase() + u.slice(1).toLowerCase();
                 const snap = await getDocs(query(collection(db, "users"), where("username", "==", name)));
                 if(snap.empty) {
-                    const nD = await addDoc(collection(db, "users"), { username: name, pin: p, dailyLimit: 180, penaltyRate: 1.0, friends: [], groupId: null, petLevel: 1, petXP: 0, petMamas: 0 });
-                    this.setupUser({id: nD.id, username: name, dailyLimit: 180, penaltyRate: 1.0, petLevel: 1, petXP: 0, petMamas: 0});
+                    const nD = await addDoc(collection(db, "users"), { username: name, pin: p, dailyLimit: 180, penaltyRate: 1.0, friends: [], groupId: null, petMamas: 58 });
+                    this.setupUser({id: nD.id, username: name, dailyLimit: 180, penaltyRate: 1.0, petMamas: 58});
                 } else {
                     const uD = snap.docs[0].data();
                     if(uD.pin === p) this.setupUser({id: snap.docs[0].id, ...uD});
@@ -183,60 +158,70 @@
                 this.currentUser = data; this.userRef = doc(db, "users", data.id);
                 document.getElementById('screenTimeDate').value = new Date().toISOString().split('T')[0];
                 document.getElementById('bottomNav').style.display = "flex";
+                document.getElementById('petMascot').style.display = "block";
                 this.switchTab('homeScreen', document.querySelector('.nav-link'));
-                this.listenToUser(); this.init(); this.listenToSettings();
+                this.init(); this.listenToSettings(); this.listenToPet();
             },
-            listenToUser() { onSnapshot(this.userRef, (d) => { const data = d.data(); this.petData = { level: data.petLevel || 1, xp: data.petXP || 0, mamas: data.petMamas || 0 }; this.updatePetUI(); }); },
-            updatePetUI() {
-                const avatars = ["🐣", "🐱", "🐈", "🐅", "🐈‍⬛"];
-                const currentAvatar = avatars[Math.min(this.petData.level-1, 4)];
-                document.getElementById('petLevelBadge').innerText = `Seviye ${this.petData.level}`;
-                document.getElementById('petAvatar').innerText = currentAvatar;
-                document.getElementById('petMascot').innerText = currentAvatar;
-                document.getElementById('currentMamas').innerText = this.petData.mamas;
-                document.getElementById('mamaPointsDisplay').innerText = this.petData.mamas;
-                document.getElementById('xpBarFill').style.width = (this.petData.xp / (this.petData.level * 100)) * 100 + "%";
+            listenToPet() {
+                const tRef = this.currentUser.groupId ? doc(db, "groups", this.currentUser.groupId) : this.userRef;
+                onSnapshot(tRef, (d) => {
+                    if(!d.exists()) return;
+                    const data = d.data();
+                    const mamas = data.petMamas !== undefined ? data.petMamas : 58;
+                    document.getElementById('currentMamas').innerText = mamas;
+                    document.getElementById('mamaPointsDisplay').innerText = mamas;
+                    this.currentMamas = mamas;
+                });
             },
             async feedPet() {
-                if(this.petData.mamas < 10) return alert("Mama yetersiz! 🦴");
-                let newXP = this.petData.xp + 10, newLevel = this.petData.level;
-                if(newXP >= (this.petData.level * 100)) { newLevel++; newXP = 0; alert("Level Atladın! 🎉"); }
-                await updateDoc(this.userRef, { petXP: newXP, petLevel: newLevel, petMamas: this.petData.mamas - 10 });
+                if(this.currentMamas < 10) return alert("Yetersiz mama!");
+                const tRef = this.currentUser.groupId ? doc(db, "groups", this.currentUser.groupId) : this.userRef;
+                await updateDoc(tRef, { petMamas: this.currentMamas - 10 });
             },
             async saveLog() {
                 const dV = document.getElementById('screenTimeDate').value, mins = parseInt(document.getElementById('screenTimeInput').value);
                 if(!dV || isNaN(mins)) return;
-                const p = Math.max(0, (mins - this.currentSettings.limit) * this.currentSettings.rate);
-                if (mins < this.currentSettings.limit) { await updateDoc(this.userRef, { petMamas: this.petData.mamas + (this.currentSettings.limit - mins) }); }
-                await addDoc(collection(db, "logs"), { userId: this.currentUser.id, username: this.currentUser.username, groupId: this.currentUser.groupId, minutes: mins, penalty: p, cleared: false, date: new Date(dV).toLocaleDateString('tr-TR', {day:'2-digit', month:'2-digit'}), timestamp: new Date(dV).getTime() });
+                const penalty = Math.max(0, (mins - this.currentSettings.limit) * this.currentSettings.rate);
+                const tRef = this.currentUser.groupId ? doc(db, "groups", this.currentUser.groupId) : this.userRef;
+                if (mins < this.currentSettings.limit) await updateDoc(tRef, { petMamas: (this.currentMamas || 0) + (this.currentSettings.limit - mins) });
+                await addDoc(collection(db, "logs"), { userId: this.currentUser.id, username: this.currentUser.username, groupId: this.currentUser.groupId, minutes: mins, penalty: penalty, cleared: false, date: new Date(dV).toLocaleDateString('tr-TR', {day:'2-digit', month:'2-digit'}), timestamp: new Date(dV).getTime() });
                 alert("Kaydedildi!"); document.getElementById('screenTimeInput').value = "";
             },
             switchTab(id, el) {
                 document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
                 document.getElementById(id).classList.add('active-screen');
                 if(el) { document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active')); el.classList.add('active'); }
-                // Maskot sadece evde gözüksün
                 document.getElementById('petMascot').style.display = (id === 'homeScreen') ? 'block' : 'none';
-                // Fonksiyon tetikleyicileri
                 if(id === 'paymentsScreen') this.loadPayments();
-                if(id === 'historyScreen') this.loadHistory();
+                if(id === 'myProfileScreen') this.loadDetailedHistory();
                 if(id === 'friendsScreen') this.loadFriends();
-                if(id === 'myProfileScreen') this.loadMyLogs();
             },
             init() {
                 onSnapshot(collection(db, "logs"), (snap) => {
-                    let unpaid = 0, summary = {};
+                    let unpaid = 0, paid = 0, today = 0, summary = {};
+                    const tStr = new Date().toLocaleDateString('tr-TR', { day: '2-digit', month: '2-digit' });
                     snap.forEach(dS => {
                         const d = dS.data();
                         if (d.userId === this.currentUser.id || (this.currentUser.groupId && d.groupId === this.currentUser.groupId)) {
-                            if (!d.cleared) { unpaid += (d.penalty || 0); summary[d.username] = (summary[d.username] || 0) + (d.penalty || 0); }
+                            if (d.cleared) paid += d.penalty;
+                            else { unpaid += d.penalty; if (d.date === tStr) today += d.penalty; summary[d.username] = (summary[d.username] || 0) + d.penalty; }
                         }
                     });
                     document.getElementById('totalUnpaidDisplay').innerText = `₺${unpaid.toFixed(2)}`;
+                    document.getElementById('totalPaidDisplay').innerText = `₺${paid.toFixed(2)}`;
+                    document.getElementById('todayPenaltyDisplay').innerText = `₺${today.toFixed(2)}`;
                     let sHtml = ""; for(let u in summary) sHtml += `<div>${u}: ₺${summary[u].toFixed(2)}</div>`;
                     document.getElementById('personalDebtSummary').innerHTML = sHtml || "Tertemiz! ✨";
                 });
             },
+            async loadDetailedHistory() {
+                const histDiv = document.getElementById('detailedLogHistory');
+                const q = query(collection(db, "logs"), where("userId", "==", this.currentUser.id));
+                const snap = await getDocs(q); let logs = []; snap.forEach(d => { let data = d.data(); data.id = d.id; logs.push(data); });
+                logs.sort((a,b) => b.timestamp - a.timestamp); histDiv.innerHTML = "";
+                logs.forEach(l => { histDiv.innerHTML += `<div class="list-item"><div>${l.date}<br><small>${l.minutes} dk</small></div><div style="text-align:right;"><span style="color:${l.penalty > 0 ? 'red':'green'}">₺${l.penalty.toFixed(2)}</span><br><button onclick="app.deleteLog('${l.id}')" style="background:none; border:none; font-size:12px; color:#888;">Sil 🗑️</button></div></div>`; });
+            },
+            async deleteLog(id) { if(confirm("Silinsin mi?")) { await deleteDoc(doc(db, "logs", id)); this.loadDetailedHistory(); } },
             listenToSettings() {
                 if(this.currentUser.groupId) {
                     onSnapshot(doc(db, "groups", this.currentUser.groupId), (d) => {
@@ -244,34 +229,19 @@
                     });
                 } else { this.updateUI(); }
             },
-            updateUI() {
-                document.getElementById('connectionStatus').innerText = this.currentUser.groupId ? "💖 Partner" : "👤 Bireysel";
-                document.getElementById('setLimit').value = this.currentSettings.limit;
-                document.getElementById('setRate').value = this.currentSettings.rate;
-            },
+            updateUI() { document.getElementById('setLimit').value = this.currentSettings.limit; document.getElementById('setRate').value = this.currentSettings.rate; },
             async loadPayments() {
-                const list = document.getElementById('paymentsListContainer'); list.innerHTML = "Yükleniyor...";
+                const list = document.getElementById('paymentsListContainer');
                 const q = this.currentUser.groupId ? query(collection(db, "logs"), where("groupId", "==", this.currentUser.groupId)) : query(collection(db, "logs"), where("userId", "==", this.currentUser.id));
                 const snap = await getDocs(q); let logs = []; snap.forEach(d => { let data = d.data(); data.id = d.id; logs.push(data); });
                 logs.sort((a,b) => b.timestamp - a.timestamp); list.innerHTML = "";
-                logs.forEach(d => { if(d.penalty > 0) list.innerHTML += `<div class="list-item"><div>${d.username}<br><small>${d.date}</small></div><div style="display:flex; align-items:center; gap:8px;">₺${d.penalty.toFixed(2)} <button class="payment-btn ${d.cleared ? 'btn-paid':'btn-unpaid'}" onclick="app.togglePayment('${d.id}', ${d.cleared})">${d.cleared ? 'Ödendi':'Öde'}</button></div></div>`; });
+                logs.forEach(d => { if(d.penalty > 0) list.innerHTML += `<div class="list-item"><div>${d.username}<br><small>${d.date}</small></div><div style="display:flex; align-items:center; gap:10px;">₺${d.penalty.toFixed(2)} <button class="payment-btn ${d.cleared ? 'btn-paid':'btn-unpaid'}" onclick="app.togglePayment('${d.id}', ${d.cleared})">${d.cleared ? 'Ödendi':'Ödenmedi'}</button></div></div>`; });
             },
             async togglePayment(id, s) { await updateDoc(doc(db, "logs", id), { cleared: !s }); this.loadPayments(); },
-            async loadMyLogs() {
-                const list = document.getElementById('historyList'); list.innerHTML = "Yükleniyor...";
-                const snap = await getDocs(query(collection(db, "logs"), where("userId", "==", this.currentUser.id)));
-                let logs = []; snap.forEach(d => { let data = d.data(); data.id = d.id; logs.push(data); });
-                logs.sort((a,b) => b.timestamp - a.timestamp); list.innerHTML = "";
-                logs.slice(0,10).forEach(d => { list.innerHTML += `<div class="list-item"><div>${d.minutes} Dk<br><small>${d.date}</small></div><div style="display:flex; align-items:center; gap:8px;"><span style="color:${d.cleared ? '#888':'red'}">₺${d.penalty.toFixed(2)}</span><button style="background:none; border:none; color:red;" onclick="app.deleteEntry('${d.id}')">🗑️</button></div></div>`; });
-            },
-            async deleteEntry(id) { if(confirm("Silinsin mi?")) { await deleteDoc(doc(db, "logs", id)); this.loadMyLogs(); } },
-            async loadHistory() {
-                const snap = await getDocs(query(collection(db, "logs"), where("userId", "==", this.currentUser.id)));
-                let logs = []; snap.forEach(d => logs.push(d.data())); logs.sort((a,b) => b.timestamp - a.timestamp);
-                const chartLogs = logs.slice(0,7).reverse();
-                const ctx = document.getElementById('penaltyChart').getContext('2d');
-                if(window.myChart) window.myChart.destroy();
-                window.myChart = new Chart(ctx, { type: 'line', data: { labels: chartLogs.map(l => l.date), datasets: [{ label: 'Dk', data: chartLogs.map(l => l.minutes), borderColor: '#7b1fa2', fill: true, tension: 0.4 }] }, options: { responsive: true, maintainAspectRatio: false } });
+            async updateSettings() {
+                const l = parseInt(document.getElementById('setLimit').value), r = parseFloat(document.getElementById('setRate').value);
+                const tRef = this.currentUser.groupId ? doc(db, "groups", this.currentUser.groupId) : this.userRef;
+                await updateDoc(tRef, { dailyLimit: l, penaltyRate: r }); alert("Güncellendi!");
             },
             async addFriend() {
                 const f = document.getElementById('addFriendInput').value.trim(); if(!f) return;
@@ -282,39 +252,25 @@
                 await updateDoc(this.userRef, { friends: newList }); this.currentUser.friends = newList; this.loadFriends();
             },
             async loadFriends() {
-                const list = document.getElementById('friendsList'); if(!this.currentUser.friends || this.currentUser.friends.length === 0) { list.innerHTML = "Kimse yok."; return; }
+                const list = document.getElementById('friendsList'); if(!this.currentUser.friends?.length) { list.innerHTML = "Dost listesi boş."; return; }
                 const snap = await getDocs(query(collection(db, "users"), where("username", "in", this.currentUser.friends)));
                 list.innerHTML = ""; snap.forEach(d => {
-                    const u = d.data(); const conn = u.groupId && u.groupId === this.currentUser.groupId;
-                    list.innerHTML += `<div class="list-item" onclick="app.handleFriendClick('${u.username}', ${conn})"><div>${u.username} ${conn ? '💖':''}</div><div style="color:var(--dark-lilac); font-size:12px;">${conn ? 'Bağlı':'Bağlan'}</div></div>`;
+                    const u = d.data(); const isConn = u.groupId && u.groupId === this.currentUser.groupId;
+                    list.innerHTML += `<div class="list-item friend-item" onclick="app.handleFriendClick('${u.username}', ${isConn})"><div>${u.username} ${isConn ? '💖':''}</div><div style="color:var(--dark-lilac); font-size:12px;">${isConn ? 'Bağlı':'Tıkla'}</div></div>`;
                 });
             },
-            handleFriendClick(n, c) { if(c) this.openFriendProfile(n); else { this.selectedFriend = n; document.getElementById('connectionModal').style.display = 'flex'; } },
+            async handleFriendClick(n, c) { if(c) this.openFriendProfile(n); else { if(confirm(`${n} ile partner ol?`)) { const snap = await getDocs(query(collection(db, "users"), where("username", "==", n))); const nG = await addDoc(collection(db, "groups"), { dailyLimit: 180, penaltyRate: 1.0, petMamas: 58 }); await updateDoc(this.userRef, { groupId: nG.id }); await updateDoc(doc(db, "users", snap.docs[0].id), { groupId: nG.id }); location.reload(); } } },
             async openFriendProfile(name) {
                 document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
                 document.getElementById('friendProfileScreen').classList.add('active-screen');
                 document.getElementById('fpName').innerText = name;
                 const snap = await getDocs(query(collection(db, "logs"), where("username", "==", name)));
-                let total = 0, logs = []; snap.forEach(d => { let data = d.data(); if(!data.cleared) total += (data.penalty || 0); logs.push(data); });
+                let total = 0, logs = []; snap.forEach(d => { let data = d.data(); if(!data.cleared) total += data.penalty; logs.push(data); });
                 document.getElementById('fpTotal').innerText = `₺${total.toFixed(2)}`;
                 const list = document.getElementById('fpHistoryList'); list.innerHTML = "";
-                logs.sort((a,b) => b.timestamp - a.timestamp).slice(0,5).forEach(d => { list.innerHTML += `<div class="list-item"><div>${d.minutes} Dk<br><small>${d.date}</small></div><div style="color:${d.cleared ? '#888':'red'}">₺${d.penalty.toFixed(2)}</div></div>`; });
+                logs.sort((a,b) => b.timestamp - a.timestamp).slice(0,10).forEach(d => { list.innerHTML += `<div class="list-item"><div>${d.minutes} Dk<br><small>${d.date}</small></div><div style="color:${d.cleared ? '#888':'red'}">₺${d.penalty.toFixed(2)}</div></div>`; });
             },
-            async makeConnection() {
-                const snap = await getDocs(query(collection(db, "users"), where("username", "==", this.selectedFriend)));
-                const fD = snap.docs[0];
-                const nG = await addDoc(collection(db, "groups"), { type: 'partner', dailyLimit: this.currentSettings.limit, penaltyRate: this.currentSettings.rate });
-                await updateDoc(this.userRef, { groupId: nG.id }); await updateDoc(doc(db, "users", fD.id), { groupId: nG.id });
-                location.reload();
-            },
-            async updateSettings() {
-                const l = parseInt(document.getElementById('setLimit').value), r = parseFloat(document.getElementById('setRate').value);
-                if (this.currentUser.groupId) await updateDoc(doc(db, "groups", this.currentUser.groupId), { dailyLimit: l, penaltyRate: r });
-                else await updateDoc(this.userRef, { dailyLimit: l, penaltyRate: r });
-                alert("Güncellendi!");
-            },
-            async disconnect() { if(confirm("Kopsun mu?")) { await updateDoc(this.userRef, { groupId: null, friends: [] }); location.reload(); } },
-            logout() { location.reload(); }, closeModal() { document.getElementById('connectionModal').style.display = 'none'; }
+            logout() { location.reload(); }
         };
         window.app = app;
     </script>
